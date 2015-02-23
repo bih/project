@@ -1,0 +1,33 @@
+<h3>Register for "<%= @lecture.lecture_name %>"</h3>
+
+<% if @lecture.students.count == 0 %>
+  <p><i>No students are registered for this lecture. <%= link_to "Click here to add students.", admin_lecture_path(@lecture) %></i></p>
+<% elsif @lecture.has_closed? %>
+  <p><i>This register cannot no longer be accessed as the lecture has ended.</i></p>
+<% elsif @lecture.is_full? %>
+  <p><i>This register has been fully completed. <%= @lecture.attendance_actual %> out of <%= @lecture.attendance_expected %> students have been registered.</i></p>
+<% elsif @lecture.has_started? %>
+  Enter your MMU ID or <strong>scan your MMU card</strong>.<br /><br />
+
+  <%= form_tag(admin_lecture_register_path(@lecture), :method => "post", class: "mmu-id-scanner-form") do %>
+    <div class="field">
+      <%= label_tag(:student_id, "MMU ID") %>
+      <%= text_field_tag(:student_id, "", :placeholder => "12345678", :class => "mmu-id-scanner scanner-wrong", :autofocus => true) %>
+    </div>
+
+    <br />
+
+    <div class="actions">
+      <%= submit_tag "Register this student" %>
+    </div>
+  <% end %>
+
+  <!-- Implement card scanner -->
+<% else %>
+  <p><i>Registration for lecture has not opened. Roughly opens in <%= distance_of_time_in_words(Time.now.utc, @lecture.start_time.utc, include_seconds: true) %>.</p>
+<% end %>
+
+<br />
+
+<%= link_to "Back to Lectures", admin_lectures_path %> | 
+<%= link_to "Back to Admin", admin_path %>

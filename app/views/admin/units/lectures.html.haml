@@ -1,0 +1,33 @@
+%h1
+  = link_to @unit.unit_name, admin_unit_path(@unit)
+  Lectures
+
+- if @unit.lectures.count > 0
+  %table{ style: "width: 75%; text-align: center" }
+    %tr
+      %th #
+      %th Lecture Name
+      %th Room
+      %th Lecturer
+      %th Time
+      %th Attendance
+      %th
+
+    - @unit.lectures.order('created_at ASC').each do |lecture|
+      = render :partial => "shared/lecture", :locals => { :lecture => lecture }
+    -
+- else
+  %p
+    %i
+      No lectures were found.
+-
+
+%br
+%br
+
+%br 
+
+%p
+  = link_to "New Lecture", new_admin_lecture_path
+  = "|"
+  = link_to "Back to Admin", admin_path

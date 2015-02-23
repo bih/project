@@ -1,0 +1,53 @@
+<h2>Leaders for the <%= @unit.unit_name %> Unit</h2>
+
+<table>
+  <tr>
+    <th>Leader Name</th>
+    <th>Leader Email Address</th>
+    <th>Leader Added</th>
+    <th></th>
+  </tr>
+
+  <% @unit.leaders_include_relationships.each do |relationship, leader| %>
+    <tr>
+      <td><%= leader.name %></td>
+      <td><%= leader.email %></td>
+      <td><%= relationship.created_at.to_s %></td>
+      <td><%= link_to "Remove", admin_unit_delete_leader_path(@unit, leader), :method => "DELETE" %></td>
+    </tr>
+  <% end %>
+
+  <% if @unit.leaders_include_relationships.count == 0 %>
+    <tr>
+      <td colspan="4"><i>No leaders found for this unit.</i></td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+
+<h4>Add new leader</h4>
+
+<%= form_for @unit_lecturer, :url => admin_unit_leaders_path(@unit) do |f| %>
+  
+  <% if @lecturers_to_add.count == 0 %>
+    <p><i>No lecturers available to be assigned as leaders of the "<%= @unit.unit_name %>" unit.</i></p>
+  <% else %>
+    <div class="field">
+      <%= f.label :user_id, "Lecturer" %>
+      <%= f.select :user_id, @lecturers_to_add %>
+    </div>
+
+    <br />
+
+    <div class="actions">
+      <%= f.submit "Add Lecturer as Unit Leader" %>
+    </div>
+  <% end %>
+
+<% end %>
+
+<br />
+
+<%= link_to "Back to Units", admin_units_path %> | 
+<%= link_to "Back to Admin", admin_path %>

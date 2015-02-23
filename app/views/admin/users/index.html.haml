@@ -1,0 +1,64 @@
+%h1
+  Viewing All 
+  = @type.capitalize.to_s.pluralize
+
+%table{ style: "width: 75%; text-align: center" }
+  %tr
+    %th #
+    %th Full Name
+    %th Email Address
+    %th Type
+    - if @type == :lecturer
+      %th Leaders of
+    -
+    - if @type == :student
+      %th Attendance Record
+      %th MMU ID
+    -
+    %th
+
+  - @users.each do |user|
+    %tr
+      %td= user.id
+      %td= user.name
+      %td= user.email
+      %td= user.type.capitalize
+      - if @type == :lecturer
+        %td
+          = (leaders_of = user.leaders_of.map{ |a| link_to a.unit_name, admin_unit_leaders_path(a) }.join(", ")).html_safe
+          = "<i>N/A</i>".html_safe if leaders_of.blank?
+      -
+      - if @type == :student
+        %td= "#{user.attendance}%"
+        %td= user.mmu_id.blank? ? "<i>Empty</i>".html_safe : user.mmu_id
+      -
+      %td
+        = link_to "Profile", admin_user_path(user)
+        = "|"
+        = link_to "Edit", edit_admin_user_path(user)
+        
+        - if user != current_user
+          = "|"
+          = link_to "Destroy", admin_user_path(user), :method => "DELETE"
+        -
+  -
+
+
+- if @users.count == 0
+  %p
+    %i
+      No
+      = @type.to_s.pluralize
+      were found.
+-
+
+%br
+
+= will_paginate @users
+
+%br
+
+%p
+  = link_to "New #{@type.capitalize.to_s}", new_admin_user_path + "?type=#{@type}"
+  = "|"
+  = link_to "Back to Admin", admin_path

@@ -1,0 +1,36 @@
+%tr{ :class => lecture.has_closed? ? "class-ended" : "class-not-ended" }
+  %td= lecture.id
+  %td= lecture.lecture_name
+  %td= lecture.lecture_type.capitalize
+  %td= lecture.lecture_room
+  %td= lecture.lecturer.name
+  %td
+    - if lecture.has_closed?
+      %i Class finished
+    - elsif lecture.currently_on?
+      %i
+        Class currently on now
+        %br
+        ( ends in
+        = distance_of_time_in_words(Time.now, lecture.end_time, include_seconds: true)
+        )
+    - else
+      = lecture.start_time.to_s
+      %br
+      = "(#{lecture.duration})"
+    -
+  %td
+    = lecture.attendance.to_s + "%"
+  %td
+    - if lecture.students.count > 0 or true
+      = link_to "Register", admin_lecture_register_path(lecture)
+      = "|"
+    -
+    = link_to "Student List", admin_lecture_path(lecture)
+    = "|"
+    = link_to "Edit", edit_admin_lecture_path(lecture)
+
+    - if current_user.admin?
+      = "|"
+      = link_to "Destroy", admin_lecture_path(lecture), :method => "DELETE"
+    -

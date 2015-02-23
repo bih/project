@@ -1,0 +1,56 @@
+<h1>Profile: <%= @user.name %></h1>
+
+<p>Type: <%= @user.type.capitalize %></p>
+<p>
+  Status:
+  <% if @user.lectures_now.count > 0 %>
+    Currently in lecture <%= link_to @user.lectures_now.first.lecture_name, admin_lecture_path(@user.lectures_now.first) %>
+  <% elsif @user.lectures_in_future.count > 0 %>
+    Next lecture is <%= link_to @user.lectures_in_future.first.lecture_name, admin_lecture_path(@user.lectures_in_future.first) %>
+  <% else %>
+    No lecture upcoming.
+  <% end %>
+</p>
+
+<p>Attendance: <%= @user.attendance %>%</p>
+
+<% if @user.student? or @user.lecturer? %>
+  <p><strong>Upcoming lectures</strong></p>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Room</th>
+      <% if @user.student? %><th>Lecturer</th><% end %>
+      <th>When</th>
+      <th>Duration</th>
+    </tr>
+
+    <% @user.lectures_in_future.each do |lecture| %>
+      <tr>
+        <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
+        <td><%= lecture.lecture_room %></td>
+        <td><%= link_to lecture.lecturer.name, admin_user_path(lecture.lecturer) %></td>
+        <td><%= lecture.start_time %></td>
+        <td><%= lecture.duration %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <% if @user.lectures_in_future.count == 0 %>
+    <p><i>No lectures upcoming.</i></p>
+  <% end %>
+<% end %>
+
+<br />
+
+<p>Created at: <%= @user.created_at %></p>
+<p>Updated at: <%= @user.updated_at %></p>
+
+<br />
+<br />
+
+<%= link_to "Edit", edit_admin_user_path(@user) %>
+<% if @user != current_user %>
+  |
+  <%= link_to "Destroy", admin_user_path(@user), :method => "DELETE" %>
+<% end %>

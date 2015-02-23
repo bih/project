@@ -1,0 +1,103 @@
+%h1 System Log History
+
+%table
+  %tr
+    %th Time
+    %th From
+    %th IP Address
+    %th Action
+    %th Comment
+
+  - @logs.select{ |log| log.auditable.present? }.each do |log|
+    %tr
+      %td= log.created_at.to_s
+      %td= link_to log.user.name, admin_user_path(log.user) rescue "Rails Console"
+      %td
+        - if log.remote_address.presence
+          = log.remote_address.presence
+        - else
+          127.0.0.1
+        -
+      %td
+        - begin
+          - if log.action.to_sym == :create
+            - if log.auditable_type.to_sym == :User
+              Created
+              = log.auditable.type
+              = link_to(log.auditable.name, admin_user_path(log.auditable))
+            - elsif log.auditable_type.to_sym == :UnitLecturer
+              Made
+              = link_to(log.associated.name, admin_user_path(log.associated))
+              a unit leader of
+              = link_to(log.auditable.unit.unit_name, admin_unit_path(log.auditable.unit))
+            - elsif log.auditable_type.to_sym == :Unit
+              Created unit
+              = link_to(log.auditable.unit_name, admin_unit_path(log.auditable))
+            - elsif log.auditable_type.to_sym == :Lecture
+              Created lecture
+              = link_to(log.auditable.lecture_name, admin_lecture_path(log.auditable))
+            - elsif log.auditable_type.to_sym == :LectureStudent
+              Added student
+              = link_to(log.auditable.user.name, admin_user_path(log.auditable.user))
+              to
+              = link_to(log.associated.lecture_name, admin_lecture_path(log.associated))
+              lecture
+            -
+          - elsif log.action.to_sym == :update
+            - if log.auditable_type.to_sym == :User
+              Changed
+              = log.audited_changes.map{ |k, v| "#{k.humanize.downcase} from #{v.first} to #{v.last}" }.join(', ')
+              on
+              = link_to(log.auditable.name, admin_user_path(log.auditable))        
+            - elsif log.auditable_type.to_sym == :Unit
+              Changed
+              = log.audited_changes.map{ |k, v| "#{k.humanize.downcase} from #{v.first} to #{v.last}" }.join(', ')
+              on
+              = link_to(log.auditable.unit_name, admin_unit_path(log.auditable))
+            - elsif log.auditable_type.to_sym == :Lecture
+              Changed
+              = log.audited_changes.map{ |k, v| "#{k.humanize.downcase} from #{v.first} to #{v.last}" }.join(', ')
+              on
+              = link_to(log.auditable.lecture_name, admin_lecture_path(log.auditable))            
+            - elsif log.auditable_type.to_sym == :LectureStudent
+              Changed
+              = log.audited_changes.map{ |k, v| "#{k.humanize.downcase} from #{v.first} to #{v.last}" }.join(', ')
+              on
+              = link_to(log.auditable.lecture.lecture_name, admin_lecture_path(log.auditable.lecture))
+            -
+          - elsif log.action.to_sym == :destroy
+            - if log.auditable_type.to_sym == :User
+              Removed user
+              = link_to(log.auditable.name, admin_user_path(log.auditable))
+            - elsif log.auditable_type.to_sym == :UnitLecturer
+              Removed
+              = link_to(log.associated.name, admin_user_path(log.associated))
+              as a unit leader of
+              = link_to(log.auditable.unit.unit_name, admin_unit_path(log.auditable.unit))
+            - elsif log.auditable_type.to_sym == :Unit
+              Removed unit
+            - elsif log.auditable_type.to_sym == :Lecture
+              Removed lecture
+            -
+          - else
+            = "#{log.action.capitalize}d #{log.auditable_type}"
+          -
+        - rescue
+          = "#{log.action.capitalize}d #{log.auditable_type}"
+        -
+      %td
+        - if log.comment.nil?
+          %i No comment
+        - else
+          = log.comment
+        -
+  -
+
+%br
+
+= will_paginate @logs
+
+%br
+
+%p
+  = link_to "Back to Admin", admin_path

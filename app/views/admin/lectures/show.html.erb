@@ -1,0 +1,91 @@
+<h2>Students on the <%= @lecture.lecture_name %> Class</h2>
+
+<table>
+  <tr>
+    <th>MMU ID</th>
+    <th>Student Name</th>
+    <th>Student Email Address</th>
+    <th>Registration Time</th>
+    <th></th>
+  </tr>
+
+  <% @lecture.students_with_attendance.each do |record, student| %>
+    <tr>
+      <td><%= student.mmu_id %></td>
+      <td><%= student.name %></td>
+      <td><%= student.email %></td>
+      <td>
+          <% if record.attended? %>
+            <% if record.seconds_late >= 30.minutes %>
+              Extremely late
+            <% elsif record.seconds_late >= 15.minutes %>
+              Late
+            <% elsif record.seconds_late >= 10.minutes %>
+              Slightly late
+            <% else %>
+              On time (by <%= record.seconds_late %> seconds)
+            <% end %>
+          <% else %>
+            <i>Not registered</i>
+          <% end %></td>
+      <td><% unless record.class_started? %>
+            <%= link_to "Remove", admin_lecture_remove_student_path(@lecture, student), :method => "DELETE" %>
+          <% end %></td>
+    </tr>
+  <% end %>
+
+  <% if @lecture.students.count == 0 %>
+    <tr>
+      <td colspan="4"><i>No students scheduled to attend the "<%= @lecture.lecture_name %>" class.</i></td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+
+<% unless @lecture.has_started? %>
+  <h4>Add student</h4>
+
+  <%= form_for @lecture_student, :url => admin_lecture_add_student_path(@lecture) do |f| %>
+    
+    <% if @students_to_add.count == 0 %>
+      <p><i>No students available to add to the "<%= @lecture.lecture_name %>" class.</i></p>
+    <% else %>
+      <div class="field">
+        <%= f.label :user_id, "Student" %>
+        <%= f.select :user_id, @students_to_add %>
+      </div>
+
+      <br />
+
+      <div class="actions">
+        <%= f.submit "Add Student to #{@lecture.lecture_name}" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <br />
+  <br />
+
+  <h4>Copy students from another lecture in this unit</h4>
+
+  <% if (other_lectures_for_form = @lecture.other_lectures_for_form).count > 0 %>
+    <%= form_tag(admin_lecture_copy_students_path(@lecture), :method => "post") do %>
+      <div class="field">
+        <%= label_tag(:lecture_to_copy_id, "Lecture to copy from") %>
+        <%= select_tag(:lecture_to_copy_id, options_for_select(other_lectures_for_form)) %>
+      </div>
+
+      <div class="actions">
+        <%= submit_tag "Copy" %>
+      </div>
+    <% end %>
+  <% else %>
+    <p><i>No classes available to copy students from.</i></p>
+  <% end %>
+<% end %>
+
+<br />
+
+<%= link_to "Back to Classes", admin_lectures_path %> | 
+<%= link_to "Back to Admin", admin_path %>

@@ -1,0 +1,42 @@
+<h2>Create new <%= @type.capitalize %></h2>
+
+<%= form_for(@user, url: admin_users_path) do |f| %>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, autofocus: true, :required => true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name, :required => true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, :required => true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off", :required => true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off", :required => true %>
+  </div>
+
+  <%= f.hidden_field :account_type, :value => @type %>
+  
+  <% if @type == :student %>
+    <div class="field">
+      <%= f.label :mmu_id, "MMU ID (Example: 12345678)" %><br />
+      <%= f.text_field :mmu_id, :maxlength => 8, :required => true %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit "Create new #{@type.capitalize}" %>
+  </div>
+<% end %>

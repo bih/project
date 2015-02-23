@@ -1,0 +1,37 @@
+%h1 Lecturer Panel
+
+%table{ style: "width: 80%; text-align: center" }
+  %tr
+    %th Classes upcoming
+    %th Today's attendance
+  
+  %tr
+    %td
+      -# Students
+      %p= link_to "View All Students", admin_users_with_type_path(:student)
+      %p= link_to "New Student", admin_new_user_with_type_path(:student)
+
+    %td
+      -# Status (needs updating)
+      %h1 84.3%
+
+%br
+%br
+
+%table{ style: "width: 80%; text-align: center" }
+  %tr
+    %th Students
+    %th Lectures
+
+
+  %tr
+    %td
+      -# Students
+      %p= link_to "View All Students", admin_users_with_type_path(:student)
+      %p= link_to "New Student", admin_new_user_with_type_path(:student)
+
+
+    %td
+      -# Lectures
+      %p= link_to "List All Lectures", admin_lectures_path
+      %p= link_to "Create New Lecture", new_admin_lecture_path

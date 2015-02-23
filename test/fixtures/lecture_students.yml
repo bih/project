@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lecture_id: 1
+  user_id: 1
+  entry_status: MyString
+  attendance: false
+  attendance_time: 2015-02-15 20:12:30
+
+two:
+  lecture_id: 1
+  user_id: 1
+  entry_status: MyString
+  attendance: false
+  attendance_time: 2015-02-15 20:12:30

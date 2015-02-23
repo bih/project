@@ -1,0 +1,19 @@
+
+
+.mmu-id-scanner {
+  outline: none;
+  border: 3px solid;
+  font-size: 17px;
+}
+
+.mmu-id-scanner.scanner-right {
+  border-color: green;
+  background: green;
+  color: white;
+}
+
+.mmu-id-scanner.scanner-wrong {
+  border-color: red;
+  background: red;
+  color: white;
+}

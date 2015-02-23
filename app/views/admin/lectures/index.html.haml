@@ -1,0 +1,41 @@
+%h1
+  Listing All Classes
+
+- @units.each do |unit|
+  - if current_user.admin?
+    %h4= link_to unit.unit_name, admin_unit_path(unit)
+  - else 
+    %h4= unit.unit_name
+  -
+
+  - if unit.lectures.count > 0
+    %table{ style: "width: 75%; text-align: center" }
+      %tr
+        %th #
+        %th Class
+        %th Type
+        %th Room
+        %th Lecturer
+        %th Time
+        %th Attendance
+        %th
+
+      - unit.lectures.order('created_at ASC').each do |lecture|
+        = render :partial => "shared/lecture", :locals => { :lecture => lecture }
+      -
+  - else
+    %p
+      %i
+        No classes were found.
+  -
+
+  %br
+  %br
+-
+
+%br 
+
+%p
+  = link_to "New Class", new_admin_lecture_path
+  = "|"
+  = link_to "Back to Admin", admin_path

@@ -1,0 +1,51 @@
+%h1
+  Listing All Units
+
+%table{ style: "width: 75%; text-align: center" }
+  %tr
+    %th #
+    %th Unit Name
+    %th Unit Code
+    %th Unit Year
+    %th Unit Leaders
+    %th Lectures in Unit
+    %th
+
+  - @units.each do |unit|
+    %tr
+      %td= unit.id
+      %td= unit.unit_name
+      %td= unit.unit_code
+      %td= unit.unit_year
+      %td
+        = @output = unit.unit_lecturers.map{ |ul| User.find(ul.user_id).name }.join(', ')
+        = "<i>No leaders</i>".html_safe if @output.blank?
+      %td
+        = unit.lectures.count
+      %td
+        = link_to "Manage Leaders", admin_unit_path(unit)
+        = "|"
+        = link_to "Manage Lectures", admin_unit_lectures_path(unit)
+        = "|"
+        = link_to "Edit", edit_admin_unit_path(unit)
+        = "|"
+        = link_to "Destroy", admin_unit_path(unit), :method => "DELETE"
+  -
+
+
+- if @units.count == 0
+  %p
+    %i
+      No units were found.
+-
+
+%br 
+
+= will_paginate @units
+
+%br
+
+%p
+  = link_to "New Unit", new_admin_unit_path
+  = "|"
+  = link_to "Back to Admin", admin_path
