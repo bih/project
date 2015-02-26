@@ -12,5 +12,10 @@
  *
  *= require_tree .
  *= require jquery.datetimepicker
+ *= require bootstrap_and_overrides
+ *= require ladda
+ *= require ladda-themed
  *= require select2
  */
+
+

@@ -2,7 +2,9 @@
   Viewing All 
   = @type.capitalize.to_s.pluralize
 
-%table{ style: "width: 75%; text-align: center" }
+%br
+
+%table
   %tr
     %th #
     %th Full Name
@@ -12,6 +14,7 @@
       %th Leaders of
     -
     - if @type == :student
+      %th Course Name
       %th Attendance Record
       %th MMU ID
     -
@@ -25,21 +28,22 @@
       %td= user.type.capitalize
       - if @type == :lecturer
         %td
-          = (leaders_of = user.leaders_of.map{ |a| link_to a.unit_name, admin_unit_leaders_path(a) }.join(", ")).html_safe
+          = (leaders_of = user.leaders_of.map{ |a| link_to a.unit_name, admin_unit_path(a) }.join(", ")).html_safe
           = "<i>N/A</i>".html_safe if leaders_of.blank?
       -
       - if @type == :student
+        %td= user.course_name
         %td= "#{user.attendance}%"
         %td= user.mmu_id.blank? ? "<i>Empty</i>".html_safe : user.mmu_id
       -
       %td
-        = link_to "Profile", admin_user_path(user)
+        = link_to "View #{@type.capitalize}", admin_user_path(user)
         = "|"
-        = link_to "Edit", edit_admin_user_path(user)
+        = link_to "Edit #{@type.capitalize}", edit_admin_user_path(user)
         
         - if user != current_user
           = "|"
-          = link_to "Destroy", admin_user_path(user), :method => "DELETE"
+          = link_to "Delete #{@type.capitalize}", admin_user_path(user), :method => "DELETE", class: "delete-confirmation"
         -
   -
 
@@ -54,7 +58,7 @@
 
 %br
 
-= will_paginate @users
+= will_paginate @users, renderer: BootstrapPagination::Rails
 
 %br
 

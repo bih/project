@@ -22,7 +22,7 @@ class Lecture < ActiveRecord::Base
 
   validate :avoid_ending_before_starting
   def avoid_ending_before_starting
-    errors.add(:end_time, "cannot be before or equal to the start time") if end_time <= start_time
+    errors.add(:end_time, "cannot be before or equal to the start time") if (end_time || 1) <= (start_time || 1)
   end
 
   before_destroy do
@@ -39,6 +39,21 @@ class Lecture < ActiveRecord::Base
 
   def self.where_finished
     where("end_time < ?", Time.now)
+  end
+
+  def self.this_week
+    during_week
+  end
+
+  def self.last_week
+    during_week(Date.today - 1.week)
+  end
+
+  def self.during_week(date = nil)
+    beginning_of_week = (date || Date.today).at_beginning_of_week.to_time
+    end_of_week = (date || Date.today).at_end_of_week.to_time
+
+    where("start_time > ?", beginning_of_week).where("end_time < ?", end_of_week)
   end
 
   def self.for_form

@@ -1,0 +1,36 @@
+.field {
+  display: block;
+  margin-bottom: 5px;
+
+  & > br {
+    display: none !important;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    vertical-align: top;
+
+    i {
+      font-weight: normal;
+    }
+  }
+
+  input {
+    font-size: 14px;
+    padding: 5px;
+    min-width: 300px;
+    vertical-align: top;
+  }
+
+  textarea {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  textarea[name*="[audit_comment]"] {
+    min-width: 500px;
+    min-height: 70px;
+    resize: vertical;
+  }
+}

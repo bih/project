@@ -1,42 +1,63 @@
 <h2>Create new <%= @type.capitalize %></h2>
 
+<% if @user.errors.any? %>
+  <div id="errors">
+    <%= @user.errors.full_messages.join("<br />").html_safe %>
+  </div>
+<% end %>
+
 <%= form_for(@user, url: admin_users_path) do |f| %>
+  
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="field">
+        <%= f.label :first_name %>
+        <%= f.text_field :first_name, autofocus: true, :required => true %>
+      </div>
 
-  <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name, autofocus: true, :required => true %>
-  </div>
+      <div class="field">
+        <%= f.label :last_name %>
+        <%= f.text_field :last_name, :required => true %>
+      </div>
 
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name, :required => true %>
-  </div>
+      <div class="field">
+        <%= f.label :email, "Email address" %>
+        <%= f.email_field :email, :required => true %>
+      </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, :required => true %>
-  </div>
+      <% if @type == :student %>
+        <div class="field">
+          <%= f.label :course_name, "Course Name" %>
+          <%= f.text_field :course_name, :required => true %>
+        </div>
+        
+        <div class="field">
+          <%= f.label :mmu_id, "MMU ID (Example: 12345678)" %>
+          <%= f.text_field :mmu_id, :maxlength => 8, :required => false %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-lg-4">
+      <div class="field">
+        <%= f.label :password, "Password" %>
+        <%= f.password_field :password, :required => true, autocomplete: "off" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off", :required => true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off", :required => true %>
+      <div class="field">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, :required => true, autocomplete: "off" %>
+      </div>
+    </div>
   </div>
 
   <%= f.hidden_field :account_type, :value => @type %>
-  
-  <% if @type == :student %>
-    <div class="field">
-      <%= f.label :mmu_id, "MMU ID (Example: 12345678)" %><br />
-      <%= f.text_field :mmu_id, :maxlength => 8, :required => true %>
-    </div>
-  <% end %>
+
+  <br />
 
   <div class="actions">
-    <%= f.submit "Create new #{@type.capitalize}" %>
+    <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Creating #{@type.capitalize}", :class => "ladda-button btn btn-system" do %>
+       <span class="ladda-label">Create <%= @type.capitalize %></span>
+       <span class="ladda-spinner"></span>
+    <% end %>
   </div>
 <% end %>

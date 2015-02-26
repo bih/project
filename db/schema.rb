@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223015959) do
+ActiveRecord::Schema.define(version: 20150223163742) do
 
   create_table "audits", force: true do |t|
     t.integer  "auditable_id"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20150223015959) do
     t.string   "mmu_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "course_name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

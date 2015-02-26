@@ -1,12 +1,15 @@
 %h1
   = link_to @unit.unit_name, admin_unit_path(@unit)
-  Lectures
+  Classes
+
+%br
 
 - if @unit.lectures.count > 0
-  %table{ style: "width: 75%; text-align: center" }
+  %table
     %tr
       %th #
-      %th Lecture Name
+      %th Class Name
+      %th Type
       %th Room
       %th Lecturer
       %th Time
@@ -19,7 +22,7 @@
 - else
   %p
     %i
-      No lectures were found.
+      No classes were found.
 -
 
 %br
@@ -28,6 +31,6 @@
 %br 
 
 %p
-  = link_to "New Lecture", new_admin_lecture_path
+  = link_to "New Class", new_admin_lecture_path
   = "|"
   = link_to "Back to Admin", admin_path

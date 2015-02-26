@@ -46,6 +46,18 @@ group :production, :development, :test do
 
   # Pagination.
   gem 'will_paginate', '~> 3.0.6'
+  gem 'will_paginate-bootstrap'
+
+  # Twitter Bootstrap.
+  gem "therubyracer"
+  gem "less-rails"
+  gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+
+  # Beautiful progress bars.
+  gem "ladda-rails"
+
+  # Google Charts.
+  gem "googlecharts"
 end
 
 # ASSETS

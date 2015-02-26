@@ -1,11 +1,13 @@
 %h1 System Log History
 
+%br
+
 %table
   %tr
     %th Time
     %th From
     %th IP Address
-    %th Action
+    %th{ style: "width: 45%" } Action
     %th Comment
 
   - @logs.select{ |log| log.auditable.present? }.each do |log|
@@ -86,7 +88,7 @@
           = "#{log.action.capitalize}d #{log.auditable_type}"
         -
       %td
-        - if log.comment.nil?
+        - if log.comment.presence.nil?
           %i No comment
         - else
           = log.comment
@@ -95,7 +97,7 @@
 
 %br
 
-= will_paginate @logs
+= will_paginate @logs, renderer: BootstrapPagination::Rails
 
 %br
 

@@ -18,7 +18,7 @@ class Admin::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to admin_path, notice: "#{@user.type.capitalize} has been created!"
+      redirect_to admin_users_path, notice: "#{@user.type.capitalize} has been created!"
     else
       render :new
     end
@@ -31,7 +31,7 @@ class Admin::UsersController < ApplicationController
     @user.update_attributes(user_params)
 
     if @user.save
-      redirect_to admin_path, notice: "#{@user.first_name.capitalize} has been updated!"
+      redirect_to admin_users_path, notice: "#{@user.first_name.capitalize} has been updated!"
     else
       render :edit
     end
@@ -53,6 +53,10 @@ protected
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :mmu_id, :email, :password, :password_confirmation, :account_type, :audit_comment)
+    params.require(:user).permit(:first_name, :last_name, :course_name, :mmu_id, :email, :password, :password_confirmation, :account_type, :audit_comment)
+  end
+
+  def get_attendance
+
   end
 end

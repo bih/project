@@ -1,6 +1,8 @@
 %h1
   Listing All Classes
 
+%br
+
 - @units.each do |unit|
   - if current_user.admin?
     %h4= link_to unit.unit_name, admin_unit_path(unit)
@@ -9,7 +11,7 @@
   -
 
   - if unit.lectures.count > 0
-    %table{ style: "width: 75%; text-align: center" }
+    %table
       %tr
         %th #
         %th Class
@@ -33,7 +35,11 @@
   %br
 -
 
-%br 
+%br
+
+= will_paginate @units, renderer: BootstrapPagination::Rails
+
+%br
 
 %p
   = link_to "New Class", new_admin_lecture_path

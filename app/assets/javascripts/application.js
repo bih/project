@@ -12,6 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require jquery.datetimepicker
 //= require select2
+//= require "spin"
+//= require "ladda"
 //= require_tree .

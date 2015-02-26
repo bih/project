@@ -1,11 +1,11 @@
-<h3>Register for "<%= @lecture.lecture_name %>"</h3>
+<h3>Register for "<%= @lecture.lecture_name %>" <%= @lecture.lecture_type.capitalize %></h3>
 
 <% if @lecture.students.count == 0 %>
-  <p><i>No students are registered for this lecture. <%= link_to "Click here to add students.", admin_lecture_path(@lecture) %></i></p>
+  <p><i>No students are registered for this <%= @lecture.lecture_type %>. <%= link_to "Click here to add students.", admin_lecture_path(@lecture) %></i></p>
 <% elsif @lecture.has_closed? %>
-  <p><i>This register cannot no longer be accessed as the lecture has ended.</i></p>
+  <p><i>This register cannot no longer be accessed as the <%= @lecture.lecture_type %> has ended.</i></p>
 <% elsif @lecture.is_full? %>
-  <p><i>This register has been fully completed. <%= @lecture.attendance_actual %> out of <%= @lecture.attendance_expected %> students have been registered.</i></p>
+  <p><i>This register is complete. <%= @lecture.attendance_actual %> out of <%= @lecture.attendance_expected %> students (100%) have been registered.</i></p>
 <% elsif @lecture.has_started? %>
   Enter your MMU ID or <strong>scan your MMU card</strong>.<br /><br />
 
@@ -24,10 +24,10 @@
 
   <!-- Implement card scanner -->
 <% else %>
-  <p><i>Registration for lecture has not opened. Roughly opens in <%= distance_of_time_in_words(Time.now.utc, @lecture.start_time.utc, include_seconds: true) %>.</p>
+  <p><i>Registration for <%= @lecture.lecture_type %> has not opened. Roughly opens in <%= distance_of_time_in_words(Time.now.utc, @lecture.start_time.utc, include_seconds: true) %>.</p>
 <% end %>
 
 <br />
 
-<%= link_to "Back to Lectures", admin_lectures_path %> | 
+<%= link_to "Back to Classes", admin_lectures_path %> | 
 <%= link_to "Back to Admin", admin_path %>

@@ -1,0 +1,44 @@
+// Header.
+
+a.navbar-brand {
+  background: image-url("mmu-logo-white.png") no-repeat center left;
+  background-size: auto 75%;
+  display: inline-block;
+  width: 55px;
+}
+
+.navbar {
+  background: #575766;
+}
+
+a.navbar-brand, .navbar, .navbar .container, .navbar ul.nav, .navbar ul.nav > li, .navbar ul.nav > li > a {
+  height: 75px;
+}
+
+.navbar ul.nav > li {
+  height: 74px;
+}
+
+.navbar ul.nav > li.admin {
+  background: #24addb;
+}
+
+.navbar ul.nav > li > a {
+  padding-top: 26px;
+  font-size: 15px;
+
+  &.title {
+    font-size: 21px;
+    color: #fff;
+    padding-top: 25px;
+  }
+
+  &, &:hover, &:active, &:link, &:visited {
+    color: #fff;
+  }
+
+  &[href]:not(.title):hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

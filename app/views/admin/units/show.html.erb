@@ -4,6 +4,7 @@
   <tr>
     <th>Leader Name</th>
     <th>Leader Email Address</th>
+    <th>Lectures In This Unit</th>
     <th>Leader Added</th>
     <th></th>
   </tr>
@@ -12,8 +13,9 @@
     <tr>
       <td><%= leader.name %></td>
       <td><%= leader.email %></td>
+      <td><%= leader.lectures_taught_in(@unit).count %></td>
       <td><%= relationship.created_at.to_s %></td>
-      <td><%= link_to "Remove", admin_unit_delete_leader_path(@unit, leader), :method => "DELETE" %></td>
+      <td><%= link_to "Remove Leader", admin_unit_delete_leader_path(@unit, leader), :method => "DELETE" %></td>
     </tr>
   <% end %>
 
@@ -26,7 +28,7 @@
 
 <br />
 
-<h4>Add new leader</h4>
+<h3>Add new leader</h3>
 
 <%= form_for @unit_lecturer, :url => admin_unit_leaders_path(@unit) do |f| %>
   
@@ -41,7 +43,10 @@
     <br />
 
     <div class="actions">
-      <%= f.submit "Add Lecturer as Unit Leader" %>
+      <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Adding as unit leader", :class => "ladda-button btn btn-system" do %>
+         <span class="ladda-label">Add Lecturer As Unit Leader</span>
+         <span class="ladda-spinner"></span>
+      <% end %>
     </div>
   <% end %>
 

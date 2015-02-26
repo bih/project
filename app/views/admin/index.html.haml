@@ -1,48 +1,57 @@
-%h1 Admin Panel
+%h1 Administrator Panel
 
-%table{ style: "width: 80%; text-align: center" }
+%br
+
+.row
+  .col-lg-6
+    = image_tag @gchart_attendance_this_week
+  .col-lg-6
+    = image_tag @gchart_attendance_last_week
+
+%br
+%br
+
+%table{ style: "width: 100%; text-align: center" }
   %tr
     %th Students
     %th Lecturers
     %th Administrators
+    %th Units
+    %th Classes
+    %th Logs
   
   %tr
     %td
       -# Students
-      %p= link_to "View All Students", admin_users_with_type_path(:student)
-      %p= link_to "New Student", admin_new_user_with_type_path(:student)
+      %ul
+        %li= link_to "View All Students", admin_users_with_type_path(:student)
+        %li= link_to "New Student", admin_new_user_with_type_path(:student)
 
     %td
       -# Lecturers
-      %p= link_to "List All Lecturers", admin_users_with_type_path(:lecturer)
-      %p= link_to "New Lecturer", admin_new_user_with_type_path(:lecturer)
+      %ul
+        %li= link_to "List All Lecturers", admin_users_with_type_path(:lecturer)
+        %li= link_to "New Lecturer", admin_new_user_with_type_path(:lecturer)
 
     %td
       -# Administrators
-      %p= link_to "List All Administrators", admin_users_with_type_path(:admin)
-      %p= link_to "Create New Administrator", admin_new_user_with_type_path(:admin)
+      %ul
+        %li= link_to "List All Administrators", admin_users_with_type_path(:admin)
+        %li= link_to "Create New Administrator", admin_new_user_with_type_path(:admin)
 
-%br
-%br
-
-%table{ style: "width: 80%; text-align: center" }
-  %tr
-    %th Units
-    %th Lectures
-    %th Logs
-
-
-  %tr
     %td
       -# Units
-      %p= link_to "List All Units", admin_units_path
-      %p= link_to "Create New Unit", new_admin_unit_path
+      %ul
+        %li= link_to "List All Units", admin_units_path
+        %li= link_to "Create New Unit", new_admin_unit_path
 
     %td
       -# Lectures
-      %p= link_to "List All Lectures", admin_lectures_path
-      %p= link_to "Create New Lecture", new_admin_lecture_path
+      %ul
+        %li= link_to "List All Classes", admin_lectures_path
+        %li= link_to "Create New Class", new_admin_lecture_path
 
     %td
       -# Logs
-      %p= link_to "Logs", admin_logs_path
+      %ul
+        %li= link_to "View Logs", admin_logs_path

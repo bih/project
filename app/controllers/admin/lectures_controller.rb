@@ -5,10 +5,10 @@ class Admin::LecturesController < ApplicationController
 
   def index
     if current_user.admin?
-      @units = Unit.all
+      @units = Unit.paginate(:page => params[:page]).all
       @lectures = Lecture.all
     else
-      @units = Unit.where_leader(current_user)
+      @units = Unit.paginate(:page => params[:page]).where_leader(current_user)
       @lectures = @units.map{ |unit| unit.lectures }.flatten
     end
   end

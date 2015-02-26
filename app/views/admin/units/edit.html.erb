@@ -1,31 +1,40 @@
 <h2>Edit "<%= @unit.unit_name %>" Unit</h2>
 
+<br />
+
 <%= simple_form_for(@unit, url: admin_unit_path(@unit)) do |f| %>
 
   <div class="field">
-    <%= f.label :unit_name %><br />
+    <%= f.label :unit_name %>
     <%= f.text_field :unit_name, autofocus: true, :required => true %>
     <%= f.error :unit_name %>
   </div>
 
   <div class="field">
-    <%= f.label :unit_code %><br />
+    <%= f.label :unit_code %>
     <%= f.text_field :unit_code, :required => true %>
     <%= f.error :unit_code %>
   </div>
 
   <div class="field">
-    <%= f.label :unit_year %><br />
+    <%= f.label :unit_year %>
     <%= f.number_field :unit_year, :required => true, :value => Date.current.year %>
     <%= f.error :unit_year %>
   </div>
 
   <div class="field">
-    <%= f.label :audit_comment, "Reason for change" %><br />
+    <%= f.label :audit_comment, "Reason for change" %>
     <%= f.text_area :audit_comment, autocomplete: "off" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Update Unit" %>
+    <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Updating Unit", :class => "ladda-button btn btn-system" do %>
+       <span class="ladda-label">Update Unit</span>
+       <span class="ladda-spinner"></span>
+    <% end %>
   </div>
 <% end %>
+
+<br />
+
+<%= link_to "Back to Units", admin_units_path %> | <%= link_to "Back to Admin", admin_path %>

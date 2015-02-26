@@ -1,7 +1,8 @@
-%h1
-  Listing All Units
+%h1 Listing All Units
 
-%table{ style: "width: 75%; text-align: center" }
+%br
+
+%table
   %tr
     %th #
     %th Unit Name
@@ -41,7 +42,7 @@
 
 %br 
 
-= will_paginate @units
+= will_paginate @units, renderer: BootstrapPagination::Rails
 
 %br
 

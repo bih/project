@@ -1,5 +1,7 @@
 <h2>Students on the <%= @lecture.lecture_name %> Class</h2>
 
+<br />
+
 <table>
   <tr>
     <th>MMU ID</th>
@@ -12,21 +14,21 @@
   <% @lecture.students_with_attendance.each do |record, student| %>
     <tr>
       <td><%= student.mmu_id %></td>
-      <td><%= student.name %></td>
+      <td><%= link_to student.name, admin_user_path(student) %></td>
       <td><%= student.email %></td>
       <td>
           <% if record.attended? %>
             <% if record.seconds_late >= 30.minutes %>
-              Extremely late
+              <span class="extremely-late">Extremely late</span>
             <% elsif record.seconds_late >= 15.minutes %>
-              Late
+              <span class="late">Late for <%= @lecture.lecture_type %></span>
             <% elsif record.seconds_late >= 10.minutes %>
-              Slightly late
+              <span class="slightly-late">Slightly late</span>
             <% else %>
-              On time (by <%= record.seconds_late %> seconds)
+              <span class="on-time">On time</span>
             <% end %>
           <% else %>
-            <i>Not registered</i>
+            <span class="not-registered">Not registered for this class</span>
           <% end %></td>
       <td><% unless record.class_started? %>
             <%= link_to "Remove", admin_lecture_remove_student_path(@lecture, student), :method => "DELETE" %>
@@ -59,7 +61,10 @@
       <br />
 
       <div class="actions">
-        <%= f.submit "Add Student to #{@lecture.lecture_name}" %>
+        <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Adding Student", :class => "ladda-button btn btn-system" do %>
+           <span class="ladda-label">Add Student</span>
+           <span class="ladda-spinner"></span>
+        <% end %>
       </div>
     <% end %>
   <% end %>
@@ -77,7 +82,10 @@
       </div>
 
       <div class="actions">
-        <%= submit_tag "Copy" %>
+        <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Copying Class", :class => "ladda-button btn btn-system" do %>
+           <span class="ladda-label">Copy Class</span>
+           <span class="ladda-spinner"></span>
+        <% end %>
       </div>
     <% end %>
   <% else %>
@@ -87,5 +95,6 @@
 
 <br />
 
+<%= link_to "#{@lecture.lecture_type.capitalize} Register", admin_lecture_register_path(@lecture) %> | 
 <%= link_to "Back to Classes", admin_lectures_path %> | 
 <%= link_to "Back to Admin", admin_path %>

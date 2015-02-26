@@ -1,54 +1,60 @@
-<h2>Create new Class</h2>
+<h2>Create New Class</h2>
+
+<br />
 
 <% if Unit.count == 0 %>
   <p><i>You need to create a unit to create a class. <%= link_to "Click here to create a unit.", new_admin_unit_path %></i></p>
 <% else %>
   <%= simple_form_for(@lecture, url: admin_lectures_path) do |f| %>
-
     <div class="field">
-      <%= f.label :lecture_name, "Class Name" %><br />
+      <%= f.label :lecture_name, "Class Name" %>
       <%= f.text_field :lecture_name, autofocus: true, :required => true %>
       <%= f.error :lecture_name %>
     </div>
 
     <div class="field">
-      <%= f.label :lecture_room, "Room" %><br />
+      <%= f.label :lecture_room, "Room" %>
       <%= f.text_field :lecture_room, autofocus: true, :required => true %>
       <%= f.error :lecture_room %>
     </div>
 
     <div class="field">
-      <%= f.label :lecture_type, "Type" %><br />
+      <%= f.label :lecture_type, "Type" %>
       <%= f.select :lecture_type, Lecture.types_for_form, :required => true %>
       <%= f.error :lecture_type %>
     </div>
 
     <div class="field">
-      <%= f.label :unit_id, "Unit" %><br />
+      <%= f.label :unit_id, "Unit" %>
       <%= f.select :unit_id, Unit.for_form, :required => true, :selected => @unit %>
       <%= f.error :unit_id %>
     </div>
 
     <div class="field">
-      <%= f.label :user_id, "Lecturer" %><br />
+      <%= f.label :user_id, "Lecturer" %>
       <%= f.select :user_id, User.where_type(:lecturer).for_form, :required => true %>
       <%= f.error :user_id %>
     </div>
 
     <div class="field">
-      <%= f.label :start_time %><br />
+      <%= f.label :start_time %>
       <%= f.text_field :start_time, :required => true, :class => 'datetimepicker disable-select2', :placeholder => "Please select start time" %>
       <%= f.error :start_time %>
     </div>
 
     <div class="field">
-      <%= f.label :end_time %><br />
+      <%= f.label :end_time %>
       <%= f.text_field :end_time, :required => true, :class => 'datetimepicker disable-select2', :placeholder => "Please select end time" %>
       <%= f.error :end_time %>
     </div>
 
+    <br />
+
     <div class="actions">
-      <%= f.submit "Create new Class" %>
+      <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Creating New Class", :class => "ladda-button btn btn-system" do %>
+         <span class="ladda-label">Create New Class</span>
+         <span class="ladda-spinner"></span>
+      <% end %>
     </div>
   <% end %>
 <% end %>

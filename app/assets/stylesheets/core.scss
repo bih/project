@@ -1,4 +1,46 @@
+span.error-inline {
+  background: #bd0000;
+  padding: 6px 10px;
+  color: #fff;
+}
 
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+h3.percentage-text {
+  font-size: 32px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.percentage-warning {
+  background: #bd0000;
+  color: #fff;
+}
+
+.percentage-great {
+  background: #53ac63;
+  color: #fff;
+}
+
+.percentage-healthy {
+  background: #edc912;
+  color: #333;
+}
+
+.btn.btn-system {
+  background: #575766;
+  color: #fff;
+}
 
 .mmu-id-scanner {
   outline: none;

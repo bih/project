@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   validates :last_name, :presence => true
   validates :email, :presence => true
   validates :account_type, :presence => true
+
+  validates :mmu_id, :presence => true, :if => Proc.new { |user| user.type == :student }
+  validates :course_name, :presence => true, :if => Proc.new { |user| user.type == :student }
+
   validates_length_of :mmu_id, :is => 8, :if => Proc.new { |user| user.type == :student }
   validates_uniqueness_of :email
   validates_uniqueness_of :mmu_id, :if => Proc.new { |user| user.type == :student }
@@ -80,6 +84,10 @@ class User < ActiveRecord::Base
     @lectures ||= lecture_students.all.map{ |ls| ls.lecture }
   end
 
+  def lectures_with_attendance
+    @lectures_with_attendance ||= lecture_students.all.map{ |ls| [ls, ls.lecture] }   
+  end
+
   def lectures_now
     @lectures_now ||= lectures.select{ |l| l.currently_on? }
   end
@@ -120,6 +128,41 @@ class User < ActiveRecord::Base
 
   def leaders_of
     UnitLecturer.where_user(self).all_from_units
+  end
+
+  def lectures_taught_in(unit)
+    unit.lectures.select{ |l| l.user_id == id }
+  end
+
+  def attendance_as_gchart
+    attendance = {}
+    attendance_names = []
+    colours = ["535aac", "825959", "843e01", "0a7061", "17334a", "6320df", "f40b59"].first(7).join(',')
+
+    (1..52).each{ |number| attendance[number] = {} }
+
+    lectures_with_attendance.each do |a, lecture|
+      attendance[lecture.start_time.strftime('%W').to_i][lecture.unit.unit_name] ||= []
+      attendance[lecture.start_time.strftime('%W').to_i][lecture.unit.unit_name].push(a.attended?)
+    end
+    
+    attendance = attendance.select{ |week, a| a.count > 0 }
+    final_attendance = attendance.map do |week, units|
+      units.sort.map do |unit, attended|
+        did_attend = attended.select{ |a| a == true }.count.to_f
+        altogether = attended.count.to_f
+
+        attendance_names.push(unit) unless attendance_names.include?(unit)
+
+        ((did_attend / altogether) * 100.0).round(1) rescue 100.0
+      end
+    end
+
+    if attendance.count > 1
+      Gchart.line(:data => final_attendance, :line_colors => colours, :min_value => 0, :max_value => 100, :title => "Attendance for #{name} by week and units", :size => "550x200", :legend => attendance_names, :labels => attendance.keys.map{ |k| "Week #{k}" })
+    else
+      nil
+    end
   end
 
 protected
