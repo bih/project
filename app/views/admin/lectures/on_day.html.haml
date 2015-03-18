@@ -1,0 +1,37 @@
+%h1
+  Classes
+  %button.datepicker.change{ :"data-day" => @day.strftime("%d %B %Y") }
+    %span= @day_text
+    &#x25BC;
+
+%br
+
+- if @lectures.count > 0
+  %table
+    %tr
+      %th Class Name
+      %th Room
+      %th Lecturer
+      %th Time
+      %th Attendance
+      %th
+
+    - @lectures.each do |lecture|
+      = render :partial => "shared/lecture", :locals => { :lecture => lecture }
+    -
+- else
+  %p
+    %i
+      No classes were found for
+      = "#{@day_text}."
+-
+
+%br
+%br
+
+%br 
+
+%p
+  = link_to "New Class", new_admin_lecture_path
+  = "|"
+  = link_to "Back to #{current_user.type.capitalize}", admin_path

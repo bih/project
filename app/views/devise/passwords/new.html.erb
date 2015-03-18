@@ -1,15 +1,20 @@
-<h2>Forgot your password?</h2>
-
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= devise_error_messages! %>
 
+  <h2>Forgot your password?</h2>
+
+  <br />
+
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email, "Email address" %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
+    <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Sending reset password instructions", :class => "ladda-button btn btn-system" do %>
+       <span class="ladda-label">Send reset password instructions</span>
+       <span class="ladda-spinner"></span>
+    <% end %>
   </div>
 <% end %>
 

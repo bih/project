@@ -15,6 +15,35 @@ a.navbar-brand, .navbar, .navbar .container, .navbar ul.nav, .navbar ul.nav > li
   height: 75px;
 }
 
+.navbar-collapse {
+  background: #575766;
+  border: 0;
+
+  @media all and (min-width: 768px) {
+    max-height: 74px;
+  }
+}
+
+.navbar-default .navbar-toggle {
+  margin-top: 20px;
+  background: #FFF;
+
+  .icon-bar {
+    background-color: #575766;    
+  }
+}
+
+
+@media all and (max-width: 768px) {
+  .nav.navbar-left {
+    display: none;
+  }
+
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #fff;
+  }
+}
+
 .navbar ul.nav > li {
   height: 74px;
 }

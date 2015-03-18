@@ -1,8 +1,10 @@
 <h2>Log in</h2>
 
+<br />
+
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email, "Email address" %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
 
@@ -14,12 +16,17 @@
   <% if devise_mapping.rememberable? -%>
     <div class="field">
       <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+      <%= f.label :remember_me, style: "display: inline" %>
     </div>
   <% end -%>
 
+  <br />
+
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Logging in", :class => "ladda-button btn btn-system" do %>
+       <span class="ladda-label">Log in</span>
+       <span class="ladda-spinner"></span>
+    <% end %>
   </div>
 <% end %>
 

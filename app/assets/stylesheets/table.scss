@@ -10,42 +10,45 @@ table {
     text-align: center;
   }
 
+  tr:nth-child(odd) td {
+    background: #eee;
+  }
+
   td {
     padding: 10px 0;
 
     ul li {
       text-align: left;
     }
-
-    span.not-registered {
-      background: #f40b59;
-      padding: 6px 10px;
-      color: #fff;
-    }
-
-    span.on-time {
-      background: #799d01;
-      padding: 6px 10px;
-      color: #fff;
-    }
-
-    span.slightly-late {
-      background: #6320df;
-      padding: 6px 10px;
-      color: #fff;
-    }
-
-    span.late {
-      background: #021936;
-      padding: 6px 10px;
-      color: #fff;
-    }
-
-    span.extremely-late {
-      background: #bd0000;
-      padding: 6px 10px;
-      color: #fff;
-    }
-
   }
+}
+
+span.not-registered {
+  background: #f40b59;
+  padding: 6px 10px;
+  color: #fff;
+}
+
+span.on-time {
+  background: #799d01;
+  padding: 6px 10px;
+  color: #fff;
+}
+
+span.slightly-late {
+  background: #6320df;
+  padding: 6px 10px;
+  color: #fff;
+}
+
+span.late {
+  background: #021936;
+  padding: 6px 10px;
+  color: #fff;
+}
+
+span.extremely-late {
+  background: #bd0000;
+  padding: 6px 10px;
+  color: #fff;
 }

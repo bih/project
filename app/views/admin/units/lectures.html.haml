@@ -7,22 +7,19 @@
 - if @unit.lectures.count > 0
   %table
     %tr
-      %th #
       %th Class Name
-      %th Type
       %th Room
       %th Lecturer
       %th Time
       %th Attendance
       %th
 
-    - @unit.lectures.order('created_at ASC').each do |lecture|
+    - @unit.lectures.order('start_time ASC').each do |lecture|
       = render :partial => "shared/lecture", :locals => { :lecture => lecture }
     -
 - else
   %p
-    %i
-      No classes were found.
+    %i No classes were found.
 -
 
 %br
@@ -32,5 +29,9 @@
 
 %p
   = link_to "New Class", new_admin_lecture_path
+  = "|"
+  = link_to "Manage Unit Leaders", admin_unit_path(@unit)
+  = "|"
+  = link_to "Back to Units", admin_units_path
   = "|"
   = link_to "Back to Admin", admin_path

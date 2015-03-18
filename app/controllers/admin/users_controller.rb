@@ -1,13 +1,24 @@
 class Admin::UsersController < ApplicationController
   before_filter :admin_lecturer_only!
+  before_filter :admin_only!, :only => [:destroy]
+  
   before_filter :set_user, :only => [:show, :edit, :update, :destroy]
   before_filter :set_type, :only => [:index, :new, :edit, :update, :destroy]
 
   def index
-    @users = User.paginate(:page => params[:page], :per_page => 30).where_type(@type).all
+    if params.include?(:watchlist)
+      @users = User.where_type(@type).all.select{ |user| user.watchlist? }.sort_by{ |user| user.attendance }
+    else
+      @users = User.paginate(:page => params[:page], :per_page => 30).where_type(@type).all
+    end
+
+    if current_user.lecturer?
+      @users = @users.select{ |user| user.part_of_unit?(current_user.teaches_in_or_leaders_of) }
+    end
   end
 
   def show
+    @units = Unit.where_student(@user)
   end
 
   def new
@@ -18,20 +29,21 @@ class Admin::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to admin_users_path, notice: "#{@user.type.capitalize} has been created!"
+      redirect_to admin_users_path + "/type/#{@user.type}", notice: "#{@user.type.capitalize} has been created!"
     else
       render :new
     end
   end
 
   def edit
+    render_404! if current_user.lecturer? and not @user.part_of_unit?(current_user.teaches_in_or_leaders_of)
   end
 
   def update
     @user.update_attributes(user_params)
 
     if @user.save
-      redirect_to admin_users_path, notice: "#{@user.first_name.capitalize} has been updated!"
+      redirect_to admin_users_path + "/type/#{@user.type}", notice: "#{@user.first_name.capitalize} has been updated!"
     else
       render :edit
     end
@@ -57,6 +69,5 @@ protected
   end
 
   def get_attendance
-
   end
 end

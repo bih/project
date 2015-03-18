@@ -1,58 +1,67 @@
 <h2>Leaders for the <%= @unit.unit_name %> Unit</h2>
 
+<br />
+<br />
+
 <table>
   <tr>
     <th>Leader Name</th>
     <th>Leader Email Address</th>
     <th>Lectures In This Unit</th>
     <th>Leader Added</th>
-    <th></th>
+    <% if current_user.admin? %><th></th><% end %>
   </tr>
 
   <% @unit.leaders_include_relationships.each do |relationship, leader| %>
     <tr>
-      <td><%= leader.name %></td>
+      <td><%= link_to leader.name, admin_user_path(leader) %></td>
       <td><%= leader.email %></td>
       <td><%= leader.lectures_taught_in(@unit).count %></td>
-      <td><%= relationship.created_at.to_s %></td>
-      <td><%= link_to "Remove Leader", admin_unit_delete_leader_path(@unit, leader), :method => "DELETE" %></td>
+      <td><%= relationship.created_at.strftime("%a #{relationship.created_at.day.ordinalize} %b %I:%M %P") %></td>
+      
+      <% if current_user.admin? %>
+        <td><%= link_to "Remove Leader", admin_unit_delete_leader_path(@unit, leader), :method => "DELETE" %></td>
+      <% end %>
     </tr>
   <% end %>
 
   <% if @unit.leaders_include_relationships.count == 0 %>
     <tr>
-      <td colspan="4"><i>No leaders found for this unit.</i></td>
+      <td colspan="5"><i>No leaders found for this unit.</i></td>
     </tr>
   <% end %>
 </table>
 
-<br />
+<% if current_user.admin? %>
+  <br />
 
-<h3>Add new leader</h3>
+  <h3>Add new leader</h3>
 
-<%= form_for @unit_lecturer, :url => admin_unit_leaders_path(@unit) do |f| %>
-  
-  <% if @lecturers_to_add.count == 0 %>
-    <p><i>No lecturers available to be assigned as leaders of the "<%= @unit.unit_name %>" unit.</i></p>
-  <% else %>
-    <div class="field">
-      <%= f.label :user_id, "Lecturer" %>
-      <%= f.select :user_id, @lecturers_to_add %>
-    </div>
+  <%= form_for @unit_lecturer, :url => admin_unit_leaders_path(@unit) do |f| %>
+    
+    <% if @lecturers_to_add.count == 0 %>
+      <p><i>No lecturers available to be assigned as leaders of the "<%= @unit.unit_name %>" unit.</i></p>
+    <% else %>
+      <div class="field">
+        <%= f.label :user_id, "Lecturer" %>
+        <%= f.select :user_id, @lecturers_to_add %>
+      </div>
 
-    <br />
+      <br />
 
-    <div class="actions">
-      <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Adding as unit leader", :class => "ladda-button btn btn-system" do %>
-         <span class="ladda-label">Add Lecturer As Unit Leader</span>
-         <span class="ladda-spinner"></span>
-      <% end %>
-    </div>
+      <div class="actions">
+        <%= content_tag :button, :type => :submit, :"data-style" => "expand-right", :"data-submit-text" => "Adding as unit leader", :class => "ladda-button btn btn-system" do %>
+           <span class="ladda-label">Add Lecturer As Unit Leader</span>
+           <span class="ladda-spinner"></span>
+        <% end %>
+      </div>
+    <% end %>
+
   <% end %>
-
 <% end %>
 
 <br />
 
+<%= link_to "View #{@unit.unit_name} Lectures", admin_unit_lectures_path(@unit) %> | 
 <%= link_to "Back to Units", admin_units_path %> | 
 <%= link_to "Back to Admin", admin_path %>

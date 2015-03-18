@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
     return render_404! unless current_user.lecturer?
   end
 
+  def unit_leader_only!
+    return render_404! unless signed_in?
+    return render_404! if not current_user.lecturer? and not current_user.is_unit_leader?
+  end
+
   def student_only!
     return render_404! unless signed_in?
     return render_404! unless current_user.student?
@@ -31,6 +36,12 @@ class ApplicationController < ActionController::Base
   def admin_lecturer_only!
     return render_404! unless signed_in?
     return render_404! unless current_user.admin? or current_user.lecturer?
-    return render_404! if current_user.lecturer? and not params[:type].nil? and params[:type] != "student"
+    return render_404! if current_user.lecturer? and not params[:type].nil? and params[:type] != "student" and (not current_user.is_unit_leader? or params[:type] != "lecturer")
+  end
+
+  def admin_unit_leader_only!
+    return render_404! unless signed_in?
+    return render_404! unless current_user.admin? or current_user.is_unit_leader?
+    return render_404! if current_user.lecturer? and not params[:type].nil? and params[:type] != "student" and (not current_user.is_unit_leader? or params[:type] != "lecturer")
   end
 end

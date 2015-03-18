@@ -1,4 +1,41 @@
-<h2>Students on the <%= @lecture.lecture_name %> Class</h2>
+<% if @lecture.has_finished? %>
+  <h2>Report for <%= @lecture.lecture_name %> Class</h2>
+  <br />
+  
+  <% if @lecture.students.count > 0 %>
+    <div class='row'>
+      <div class='col-lg-5 center <%=
+        if @lecture.attendance >= 95
+          "percentage-great"
+        elsif @lecture.attendance <= 75
+          "percentage-warning"
+        else
+          "percentage-healthy"
+        end
+      %>'>
+        <h4>Total attendance</h4>
+        <h3 class='percentage-text'><%= @lecture.attendance %>%</h3>
+      </div>
+      <div class='col-lg-2'>&nbsp;</div>
+      <div class='col-lg-5 center <%=
+        if @lecture.average_minutes_to_class <= 10
+          "percentage-great"
+        elsif @lecture.average_minutes_to_class >= 20
+          "percentage-warning"
+        else
+          "percentage-healthy"
+        end
+      %>'>
+        <h4>Average punctuality</h4>
+        <h3 class='percentage-text'><%= @lecture.average_minutes_to_class %> minutes</h3>
+      </div>
+    </div>
+
+    <br />
+  <% end %>
+<% else %>
+  <h2>Students on the <%= @lecture.lecture_name %> Class</h2>
+<% end %>
 
 <br />
 
@@ -21,7 +58,7 @@
             <% if record.seconds_late >= 30.minutes %>
               <span class="extremely-late">Extremely late</span>
             <% elsif record.seconds_late >= 15.minutes %>
-              <span class="late">Late for <%= @lecture.lecture_type %></span>
+              <span class="late">Late for <%= @lecture.lecture_type %> by <%= record.minutes_late %> minutes</span>
             <% elsif record.seconds_late >= 10.minutes %>
               <span class="slightly-late">Slightly late</span>
             <% else %>
@@ -38,7 +75,13 @@
 
   <% if @lecture.students.count == 0 %>
     <tr>
-      <td colspan="4"><i>No students scheduled to attend the "<%= @lecture.lecture_name %>" class.</i></td>
+      <td colspan="5">
+        <% if @lecture.has_finished? %>
+          <i>No students attended the "<%= @lecture.lecture_name %>" class.</i>
+        <% else %>
+          <i>No students scheduled to attend the "<%= @lecture.lecture_name %>" class.</i>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>
@@ -51,7 +94,9 @@
   <%= form_for @lecture_student, :url => admin_lecture_add_student_path(@lecture) do |f| %>
     
     <% if @students_to_add.count == 0 %>
-      <p><i>No students available to add to the "<%= @lecture.lecture_name %>" class.</i></p>
+      <div class="alert alert-danger alert-dismissable fade in">
+        No students available to add to the "<%= @lecture.lecture_name %>" class.
+      </div>
     <% else %>
       <div class="field">
         <%= f.label :user_id, "Student" %>
@@ -89,12 +134,19 @@
       </div>
     <% end %>
   <% else %>
-    <p><i>No classes available to copy students from.</i></p>
+    <div class="alert alert-danger alert-dismissable fade in">
+      No classes available to copy students from.
+    </div>
   <% end %>
 <% end %>
 
 <br />
+<br />
 
-<%= link_to "#{@lecture.lecture_type.capitalize} Register", admin_lecture_register_path(@lecture) %> | 
+<% unless @lecture.has_finished? %>
+  <%= link_to "Go To #{@lecture.lecture_type.capitalize} Register", admin_lecture_register_path(@lecture) %> | 
+<% end %>
+
+<%= link_to "Back to #{@lecture.unit.unit_name} Unit", admin_unit_lectures_path(@lecture.unit) %> | 
 <%= link_to "Back to Classes", admin_lectures_path %> | 
 <%= link_to "Back to Admin", admin_path %>

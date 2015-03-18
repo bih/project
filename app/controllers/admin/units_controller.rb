@@ -1,9 +1,14 @@
 class Admin::UnitsController < ApplicationController
-  before_filter :admin_only!
-  before_filter :set_unit, only: [:create_leader, :delete_leader, :lectures, :show, :edit, :update, :destroy]
+  before_filter :admin_unit_leader_only!
+  before_filter :admin_only!, only: [:new, :create, :edit, :update, :destroy, :create_leader, :delete_leader]
+  before_filter :set_unit, only: [:create_leader, :delete_leader, :lectures, :report, :show, :edit, :update, :destroy]
 
   def index
-    @units = Unit.paginate(:page => params[:page], :per_page => 30).all
+    if current_user.is_unit_leader?
+      @units = Unit.where_leader(current_user)
+    else
+      @units = Unit.paginate(:page => params[:page], :per_page => 30).all
+    end
   end
 
   def show
@@ -12,6 +17,9 @@ class Admin::UnitsController < ApplicationController
   end
 
   def lectures
+  end
+
+  def report
   end
 
   def create_leader

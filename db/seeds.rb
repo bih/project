@@ -3,25 +3,5 @@
 #
 # Examples:
 #
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
-User.create({
-    first_name: "John",
-    last_name: "Smith",
-    email: "john@smith.com",
-    password: "john@smith.com",
-    password_confirmation: "john@smith.com",
-    account_type: "admin",
-    mmu_id: ""
-  })
-
-User.create({
-    first_name: "Bilawal",
-    last_name: "Hameed",
-    email: "11026592@stu.mmu.ac.uk",
-    password: "ODYEaKETAN",
-    password_confirmation: "ODYEaKETAN",
-    account_type: "student",
-    mmu_id: "11026592"
-  })
+#   cities = City.create!([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+#   Mayor.create!(name: 'Emanuel', city: cities.first)

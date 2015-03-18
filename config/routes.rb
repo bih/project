@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       delete '/leader/:id' => 'units#delete_leader', as: 'delete_leader'
 
       get '/lectures' => 'units#lectures', as: 'lectures'
+      get '/report' => 'units#report', as: 'report'
     end
 
     get '/users/new/type/:type/' => 'users#new', :as => :new_user_with_type
@@ -27,6 +28,7 @@ Rails.application.routes.draw do
       delete '/student/:id' => 'lectures#remove_student', as: 'remove_student'
     end
 
+    get '/lectures_on' => 'lectures#on_day', as: 'lectures_on'
     get '/logs' => 'logs#index'
   end
 

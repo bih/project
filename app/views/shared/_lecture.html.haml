@@ -1,34 +1,41 @@
 %tr{ :class => lecture.has_closed? ? "class-ended" : "class-not-ended" }
-  %td= lecture.id
-  %td= lecture.lecture_name
-  %td= lecture.lecture_type.capitalize
+  %td= link_to lecture.lecture_name, admin_lecture_path(lecture)
   %td= lecture.lecture_room
   %td= lecture.lecturer.name
-  %td
+  %td{ style: "width: 15%" }
     - if lecture.has_closed?
-      %i Class finished
+      %i
+        Class finished
+        = "on #{lecture.end_time.strftime("%d/%m/%y at %I:%M %P")}"
     - elsif lecture.currently_on?
       %i
         Class currently on now
         %br
-        ( ends in
-        = distance_of_time_in_words(Time.now, lecture.end_time, include_seconds: true)
-        )
+        = "(ends in #{distance_of_time_in_words(Time.now, lecture.end_time, include_seconds: true)})"
     - else
-      = lecture.start_time.to_s
+      = lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P")
       %br
       = "(#{lecture.duration})"
     -
   %td
-    = lecture.attendance.to_s + "%"
+    = "#{lecture.attendance_actual}/#{lecture.attendance_expected} (#{lecture.attendance.to_i}%)"
   %td
-    - if lecture.students.count > 0 or true
+    - if lecture.students.count > 0 or true and not lecture.has_finished?
       = link_to "Register", admin_lecture_register_path(lecture)
       = "|"
+    - elsif lecture.has_finished?
+      = link_to "View Class Report", admin_lecture_path(lecture)
+      = "|"
     -
-    = link_to "Student List", admin_lecture_path(lecture)
-    = "|"
-    = link_to "Edit", edit_admin_lecture_path(lecture)
+
+    - if not lecture.has_finished?
+      = link_to "Student List", admin_lecture_path(lecture)
+      = "|"
+    -
+
+    - if current_user.admin? or current_user.is_unit_leader? or lecture.user == current_user
+      = link_to "Edit", edit_admin_lecture_path(lecture)
+    -
 
     - if current_user.admin?
       = "|"

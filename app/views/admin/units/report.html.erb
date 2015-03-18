@@ -1,0 +1,243 @@
+<h1>Report for <%= @unit.unit_name %> Unit</h1>
+
+<br />
+
+<div class='row'>
+  <div class='col-lg-5 center <%=
+    if @unit.attendance >= 95
+      "percentage-great"
+    elsif @unit.attendance <= 75
+      "percentage-warning"
+    else
+      "percentage-healthy"
+    end
+  %>'>
+    <br /><br />
+    <h4>Average attendance for classes in this unit</h4>
+    <h3 class='percentage-text'><%= @unit.attendance %>%</h3>
+    <br /><br /><br />
+  </div>
+
+  <div class='col-lg-2'>&nbsp;</div>
+
+  <div class='col-lg-5 center <%=
+    if @unit.average_minutes_to_class <= 10
+      "percentage-great"
+    elsif @unit.average_minutes_to_class >= 20
+      "percentage-warning"
+    else
+      "percentage-healthy"
+    end
+  %>'>
+    <br /><br />
+    <h4>Average punctuality for classes in this unit</h4>
+    <h3 class='percentage-text'><%= @unit.average_minutes_to_class %> minutes</h3>
+    <br /><br /><br />
+  </div>
+</div>
+
+<br />
+
+<div class='row'>
+  <div class='col-lg-4 center'>
+    <h4>Lectures in this unit</h4>
+    <h3 class='percentage-text'><%= @unit.lectures.count %></h3>
+  </div>
+
+  <div class='col-lg-4 center'>
+    <h4>Unit leaders for this unit</h4>
+    <h3 class='percentage-text'><%= @unit.unit_lecturers.count %></h3>
+  </div>
+
+  <div class='col-lg-4 center'>
+    <h4>Lecturers in this unit</h4>
+    <h3 class='percentage-text'><%= @unit.lecturers.count %></h3>
+  </div>
+</div>
+
+<br />
+
+<div class='row'>
+  <div class='col-lg-6'>
+    <h4>Attendance breakdown by lecturers</h4>
+
+    <table>
+      <tr>
+        <th style='width: 40%'>Lecturer</th>
+        <th>Student Attendance</th>
+        <th>Student Punctuality</th>
+      </tr>
+
+      <% @unit.lecturer_attendance_and_punctuality.each do |lecturer, attendance_and_punctuality| %>
+        <% attendance, punctuality = attendance_and_punctuality %>
+
+        <tr>
+          <td><%= link_to lecturer.name, admin_user_path(lecturer) %></td>
+          <td><%= attendance %>%</td>
+          <td><%= punctuality %> minutes</td>
+        </tr>
+      <% end %>
+    </table>
+
+  </div>
+
+  <div class='col-lg-6'>
+    <h4>Attendance breakdown by week</h4>
+
+    <table>
+      <tr>
+        <th style='width: 40%'>Week Commencing</th>
+        <th>Student Attendance</th>
+        <th>Student Punctuality</th>
+      </tr>
+
+      <% @unit.attendance_by_weeks.each do |week, attendance_and_punctuality| %>
+        <% attendance, punctuality = attendance_and_punctuality %>
+
+        <tr>
+          <td><%= Date.commercial(Time.now.year, @unit.attendance_by_weeks.keys.first.to_i, 1).to_time.strftime("%d %B %Y") %></td>
+          <td><%= attendance %>%</td>
+          <td><%= punctuality %> minutes</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<br />
+<br />
+
+<div class='row'>
+  <div class='col-lg-6'>
+    <h4>Attendance breakdown by lecture type</h4>
+
+    <table>
+      <tr>
+        <th style='width: 40%'>Lecture Type</th>
+        <th>Student Attendance</th>
+        <th>Student Punctuality</th>
+      </tr>
+
+      <% @unit.attendance_by_lecture_types.each do |type, attendance_and_punctuality| %>
+        <% attendance, punctuality = attendance_and_punctuality %>
+
+        <tr>
+          <td><%= type.capitalize %></td>
+          <td><%= attendance %>%</td>
+          <td><%= punctuality %> minutes</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class='col-lg-6'>
+    <h4>Attendance breakdown by course</h4>
+
+    <table>
+      <tr>
+        <th style='width: 40%'>Course Name</th>
+        <th>Student Attendance</th>
+        <th>Student Punctuality</th>
+      </tr>
+
+      <% @unit.attendance_by_course.each do |course_name, attendance_and_punctuality| %>
+        <% attendance, punctuality = attendance_and_punctuality %>
+
+        <tr>
+          <td><%= course_name %></td>
+          <td><%= attendance %>%</td>
+          <td><%= punctuality %> minutes</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<br />
+<br />
+
+<div class='row'>
+  <div class='col-lg-12'>
+    <h4>Attendance breakdown by student</h4>
+
+
+    <table>
+      <tr>
+        <th style='width: 30%'>Student</th>
+        <th>Course Name</th>
+        <th>Student Attendance</th>
+        <th>Student Punctuality</th>
+      </tr>
+
+      <% @unit.students.each do |student| %>
+
+        <tr>
+          <td><%= link_to student.name, admin_user_path(student) %></td>
+          <td><%= student.course_name %></td>
+          <td><%= @unit.attendance_of_student(student) %>%</td>
+          <td><%= @unit.average_minutes_of_student(student) %> minutes</td>
+        </tr>
+      <% end %>
+    </table>
+
+  </div>
+</div>
+
+<br />
+<br />
+
+<div class='row'>
+  <div class='col-lg-12'>
+    <h4>Lectures in past</h4>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Room</th>
+        <th>When</th>
+        <th>Duration</th>
+        <th>Attendance</th>
+      </tr>
+
+      <% @unit.lectures_in_past.each do |lecture| %>
+        <tr>
+          <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
+          <td><%= lecture.lecture_room %></td>
+          <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
+          <td><%= lecture.duration %></td>
+          <td><%= lecture.attendance_actual %>/<%= lecture.attendance_expected %> (<%= lecture.attendance.to_i %>%)</td>
+        </tr>
+      <% end %>
+    </table>
+
+    <% if @unit.lectures_in_past.count == 0 %>
+      <p><i>There are no lectures for the <%= @unit.unit_name %> in the past.</i></p>
+    <% end %>
+    
+    <br /><br />
+
+    <h4>Lectures in future</h4>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Room</th>
+        <th>When</th>
+        <th>Duration</th>
+        <th>Attendance</th>
+      </tr>
+
+      <% @unit.lectures_in_future.each do |lecture| %>
+        <tr>
+          <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
+          <td><%= lecture.lecture_room %></td>
+          <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
+          <td><%= lecture.duration %></td>
+          <td><%= lecture.attendance_actual %>/<%= lecture.attendance_expected %> (<%= lecture.attendance.to_i %>%)</td>
+        </tr>
+      <% end %>
+    </table>
+
+    <% if @unit.lectures_in_future.count == 0 %>
+      <p><i>No lectures for the <%= @unit.unit_name %> in the future.</i></p>
+    <% end %>
+  </div>
+</div>

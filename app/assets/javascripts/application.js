@@ -17,4 +17,5 @@
 //= require select2
 //= require "spin"
 //= require "ladda"
+//= require moment
 //= require_tree .

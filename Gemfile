@@ -32,6 +32,12 @@ group :production, :development, :test do
   # A flexible authentication system.
   gem "devise"
 
+  # Fake data.
+  gem "faker"
+
+  # Import and export data.
+  gem 'yaml_db'
+
   # Beautiful templating.
   gem 'haml-rails'
 
@@ -55,6 +61,9 @@ group :production, :development, :test do
 
   # Beautiful progress bars.
   gem "ladda-rails"
+
+  # Moment.js
+  gem "momentjs-rails"
 
   # Google Charts.
   gem "googlecharts"

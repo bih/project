@@ -4,12 +4,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    super
+    render_404!
   end
 
   # POST /resource
   def create
-    super
+    render_404!
   end
 
   # GET /resource/edit

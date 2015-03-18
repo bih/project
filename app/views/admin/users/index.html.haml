@@ -1,28 +1,42 @@
 %h1
-  Viewing All 
-  = @type.capitalize.to_s.pluralize
+  - if params.include?(:watchlist)
+    Viewing
+    = @type.capitalize.to_s.pluralize
+    With Low Attendance
+  - else
+    Viewing All 
+    = @type.capitalize.to_s.pluralize
+  -
+
+  - if current_user.lecturer?
+    In Your Units
+  -
 
 %br
 
 %table
   %tr
-    %th #
-    %th Full Name
+    - if @type == :student
+      %th MMU ID
+    -
+    %th{ style: "width: 15%" } Full Name
     %th Email Address
-    %th Type
+    %th{ style: "width: 10%" } Type
     - if @type == :lecturer
-      %th Leaders of
+      %th{ style: "width: 25%" } Leaders of
     -
     - if @type == :student
       %th Course Name
-      %th Attendance Record
-      %th MMU ID
+      %th Attendance
+      %th Avg Punctuality
     -
     %th
 
   - @users.each do |user|
     %tr
-      %td= user.id
+      - if @type == :student
+        %td= user.mmu_id.blank? ? "<i>Empty</i>".html_safe : user.mmu_id
+      -
       %td= user.name
       %td= user.email
       %td= user.type.capitalize
@@ -34,16 +48,26 @@
       - if @type == :student
         %td= user.course_name
         %td= "#{user.attendance}%"
-        %td= user.mmu_id.blank? ? "<i>Empty</i>".html_safe : user.mmu_id
+        %td
+          - if user.average_minutes_to_class > 0
+            = "#{user.average_minutes_to_class} mins"
+          - else
+            = "-"
+          -
       -
       %td
-        = link_to "View #{@type.capitalize}", admin_user_path(user)
-        = "|"
-        = link_to "Edit #{@type.capitalize}", edit_admin_user_path(user)
-        
-        - if user != current_user
+        - if @type == :lecturer
+          = link_to "Report for #{@type.capitalize}", admin_user_path(user)
           = "|"
-          = link_to "Delete #{@type.capitalize}", admin_user_path(user), :method => "DELETE", class: "delete-confirmation"
+        - elsif @type == :student
+          = link_to "Report for #{@type.capitalize}", admin_user_path(user)
+          = "|"
+        -
+        = link_to "Edit", edit_admin_user_path(user)
+        
+        - if user != current_user and user.admin?
+          = "|"
+          = link_to "Destroy", admin_user_path(user), :method => "DELETE", class: "delete-confirmation"
         -
   -
 
@@ -56,13 +80,14 @@
       were found.
 -
 
-%br
-
-= will_paginate @users, renderer: BootstrapPagination::Rails
+- unless current_user.lecturer? or params.include?(:watchlist)
+  %br
+  = will_paginate @users, renderer: BootstrapPagination::Rails
+-
 
 %br
 
 %p
   = link_to "New #{@type.capitalize.to_s}", new_admin_user_path + "?type=#{@type}"
   = "|"
-  = link_to "Back to Admin", admin_path
+  = link_to "Back to #{current_user.type.capitalize}", admin_path

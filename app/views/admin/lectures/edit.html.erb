@@ -3,53 +3,59 @@
 <br />
 
 <%= simple_form_for(@lecture, url: admin_lecture_path(@lecture)) do |f| %>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="field">
+          <%= f.label :lecture_name, "Class Name" %>
+          <%= f.text_field :lecture_name, autofocus: true, :required => true %>
+          <%= f.error :lecture_name %>
+        </div>
 
-  <div class="field">
-    <%= f.label :lecture_name, "Class Name" %>
-    <%= f.text_field :lecture_name, autofocus: true, :required => true %>
-    <%= f.error :lecture_name %>
-  </div>
+        <div class="field">
+          <%= f.label :lecture_room, "Room" %>
+          <%= f.text_field :lecture_room, autofocus: true, :required => true %>
+          <%= f.error :lecture_room %>
+        </div>
 
-  <div class="field">
-    <%= f.label :lecture_room, "Room" %>
-    <%= f.text_field :lecture_room, autofocus: true, :required => true %>
-    <%= f.error :lecture_room %>
-  </div>
+        <div class="field">
+          <%= f.label :lecture_type, "Type" %>
+          <%= f.select :lecture_type, Lecture.types_for_form, :required => true %>
+          <%= f.error :lecture_type %>
+        </div>
 
-  <div class="field">
-    <%= f.label :lecture_type, "Type" %>
-    <%= f.select :lecture_type, Lecture.types_for_form, :required => true %>
-    <%= f.error :lecture_type %>
-  </div>
+        <div class="field">
+          <%= f.label :unit_id, "Unit" %>
+          <%= f.select :unit_id, @units, :required => true, :selected => @unit %>
+          <%= f.error :unit_id %>
+        </div>
 
-  <div class="field">
-    <%= f.label :unit_id, "Unit" %>
-    <%= f.select :unit_id, Unit.for_form, :required => true %>
-    <%= f.error :unit_id %>
-  </div>
+        <div class="field">
+          <%= f.label :user_id, "Lecturer" %>
+          <%= f.select :user_id, @lecturers, :required => true %>
+          <%= f.error :user_id %>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="field">
+          <%= f.label :start_time %>
+          <%= f.text_field :start_time, :required => true, :class => 'datetimepicker disable-select2', :placeholder => "Please select start time" %>
+          <%= f.error :start_time %>
+        </div>
 
-  <div class="field">
-    <%= f.label :user_id, "Lecturer" %>
-    <%= f.select :user_id, User.where_type(:lecturer).for_form, :required => true %>
-    <%= f.error :user_id %>
-  </div>
+        <div class="field">
+          <%= f.label :end_time %>
+          <%= f.text_field :end_time, :required => true, :class => 'datetimepicker disable-select2', :placeholder => "Please select end time" %>
+          <%= f.error :end_time %>
+        </div>
 
-  <div class="field">
-    <%= f.label :start_time %>
-    <%= f.text_field :start_time, :required => true, :class => 'datetimepicker disable-select2', :placeholder => "Please select start time" %>
-    <%= f.error :start_time %>
-  </div>
+        <br /><br /><br />
 
-  <div class="field">
-    <%= f.label :end_time %>
-    <%= f.text_field :end_time, :required => true, :class => 'datetimepicker disable-select2', :placeholder => "Please select end time" %>
-    <%= f.error :end_time %>
-  </div>
-
-  <div class="field">
-    <%= f.label :audit_comment, "Reason for change" %><br />
-    <%= f.text_area :audit_comment, autocomplete: "off" %>
-  </div>
+        <div class="field">
+          <%= f.label :audit_comment, "Reason for change <i>Optional</i>".html_safe %><br />
+          <%= f.text_area :audit_comment, autocomplete: "off" %>
+        </div>
+      </div>
+    </div>
 
   <br />
 

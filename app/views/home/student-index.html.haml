@@ -1,0 +1,72 @@
+%h1
+  Hi,
+  = @user.name
+
+%br
+
+.row
+  .col-lg-12.attendance{ :class => @attendance[:class] }
+    %h3= @attendance[:text]
+
+%br
+%br
+
+.row
+  .col-lg-6
+    %h4.center.title Attendance In Your Units
+
+    %table
+      %tr
+        %th Unit
+        %th Unit Attendance
+    
+      - @units.each do |unit|
+        %tr.title-tr
+          %td= unit.unit_name
+          %td= "#{unit.attendance_of_student(@user)}%"
+      -
+
+  .col-lg-6
+    :erb
+      <% if (attendance_gchart = @user.attendance_as_gchart).nil? %>
+        <br />
+        <br />
+        <p class='center'><span class="error-inline">There is not enough data to display a graph about <%= @user.name %>'s attendance.</span></p>
+      <% else %>
+        <%= image_tag attendance_gchart %>
+      <% end %>
+      <br />
+
+%br
+%br
+
+:erb
+  <div class='row'>
+    <div class='col-lg-12'>
+      <h4>Upcoming classes</h4>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Room</th>
+          <th>Lecturer</th>
+          <th>When</th>
+          <th>Duration</th>
+        </tr>
+
+        <% @user.lectures_in_future.each do |lecture| %>
+          <tr>
+            <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
+            <td><%= lecture.lecture_room %></td>
+            <td><%= lecture.lecturer.name %></td>
+            <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
+            <td><%= lecture.duration %></td>
+          </tr>
+        <% end %>
+      </table>
+
+      <% if @user.lectures_in_future.count == 0 %>
+        <br />
+        <p class='center'><i>No lectures upcoming.</i></p>
+      <% end %>
+    </div>
+  </div>

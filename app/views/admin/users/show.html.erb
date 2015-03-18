@@ -1,9 +1,127 @@
-<h1>Profile for <%= @user.name %></h1>
-<br />
+<% if @user.student? or @user.lecturer? %>
+  <h1>Report for <%= @user.type.capitalize %>: <%= @user.name %></h1>
+<% end %>
+
+<% if @user.lecturer? and @user.leaders_of.any? %>
+  <br />
+  <br />
+
+  <div class='row'>
+    <% if @user.leaders_of.any? %>
+      <div class='col-lg-5'>
+        <p><strong><%= @user.first_name %> is currently a unit leader of <%= @user.leaders_of.count %> units</strong></p>
+        <table>
+          <tr>
+            <th>Unit Name</th>
+          </tr>
+
+          <% @user.leaders_of.each do |unit| %>
+            <tr>
+              <td>
+                <% if current_user.admin? %>
+                  <%= link_to unit.unit_name, admin_unit_path(unit) %>
+                <% else %>
+                  <%= unit.unit_name %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+
+      <div class='col-lg-7'>
+        <div class='row'>
+          <div class='col-lg-6 center <%=
+            if @user.attendance >= 95
+              "percentage-great"
+            elsif @user.attendance <= 75
+              "percentage-warning"
+            else
+              "percentage-healthy"
+            end
+          %>'>
+            <br />
+            <br />
+            <br />
+            <h4>Total student attendance in classes</h4>
+            <h3 class='percentage-text'><%= @user.attendance %>%</h3>
+            <br />
+            <br />
+            <br />
+          </div>
+
+          <div class='col-lg-1'>&nbsp;</div>
+
+          <div class='col-lg-5 center <%=
+            if @user.lecturer_average_minutes_to_class <= 10
+              "percentage-great"
+            elsif @user.lecturer_average_minutes_to_class >= 20
+              "percentage-warning"
+            else
+              "percentage-healthy"
+            end
+          %>'>
+            <br />
+            <br />
+            <br />
+            <h4>Average punctuality in classes</h4>
+            <h3 class='percentage-text'><%= @user.lecturer_average_minutes_to_class %> minutes</h3>
+            <br />
+            <br />
+            <br />
+          </div>
+
+        </div>
+      </div>
+    <% else %>
+      <div class='col-lg-5 center <%=
+        if @user.attendance >= 95
+          "percentage-great"
+        elsif @user.attendance <= 75
+          "percentage-warning"
+        else
+          "percentage-healthy"
+        end
+      %>'>
+        <br />
+        <br />
+        <br />
+        <h4>Total student attendance in classes</h4>
+        <h3 class='percentage-text'><%= @user.attendance %>%</h3>
+        <br />
+        <br />
+        <br />
+      </div>
+
+      <div class='col-lg-2'>&nbsp;</div>
+
+      <div class='col-lg-5 center <%=
+        if @user.average_minutes_to_class <= 10
+          "percentage-great"
+        elsif @user.average_minutes_to_class >= 20
+          "percentage-warning"
+        else
+          "percentage-healthy"
+        end
+      %>'>
+        <br />
+        <br />
+        <br />
+        <h4>Average punctuality in classes</h4>
+        <h3 class='percentage-text'><%= @user.average_minutes_to_class %> minutes</h3>
+        <br />
+        <br />
+        <br />
+      </div>
+    <% end %>
+  </div>
+
+  <br />
+<% end %>
 
 <% if @user.student? %>
   <div class='row'>
-    <div class='col-lg-3 center <%=
+    <div class='col-lg-5 center <%=
       if @user.attendance >= 95
         "percentage-great"
       elsif @user.attendance <= 75
@@ -15,7 +133,31 @@
       <h4>Total attendance</h4>
       <h3 class='percentage-text'><%= @user.attendance %>%</h3>
     </div>
-    <div class='col-lg-6'>
+    <div class='col-lg-2'>&nbsp;</div>
+    <div class='col-lg-5 center <%=
+      if @user.average_minutes_to_class <= 10
+        "percentage-great"
+      elsif @user.average_minutes_to_class >= 20
+        "percentage-warning"
+      else
+        "percentage-healthy"
+      end
+    %>'>
+      <h4>Average punctuality</h4>
+      <h3 class='percentage-text'><%= @user.average_minutes_to_class %> minutes</h3>
+    </div>
+  </div>
+<% end %>
+
+<br />
+<br />
+
+<% if @user.student? %>
+  <br />
+  <br />
+
+  <div class='row'>
+    <div class='col-lg-6 center'>
       <% if (attendance_gchart = @user.attendance_as_gchart).nil? %>
         <br />
         <br />
@@ -23,23 +165,57 @@
       <% else %>
         <%= image_tag attendance_gchart %>
       <% end %>
-      <br />
     </div>
-    <div class='col-lg-3'>
-      <h4>Activity</h4>
-      <p>Created <%= time_ago_in_words @user.created_at %> ago</p>
-      <p>Updated <%= time_ago_in_words @user.updated_at %> ago</p>
+    <div class='col-lg-6 center'>
+      <p><%= image_tag @user.attendance_by_day_as_gchart %></p>
     </div>
   </div>
-<% else %>
-  <h4>Activity</h4>
-  <p>Created <%= time_ago_in_words @user.created_at %> ago</p>
-  <p>Updated <%= time_ago_in_words @user.updated_at %> ago</p>
-<% end %>
 
-<br />
+  <br />
+  <br />
 
-<% if @user.student? %>
+  <div class='row'>
+    <div class='col-lg-6'>
+      <h4>Unit Attendance</h4>
+
+      <table>
+        <tr>
+          <th>Unit</th>
+          <th>Unit Attendance</th>
+        </tr>
+
+        <% @units.each do |unit| %>
+          <tr>
+            <td><%= link_to unit.unit_name, admin_unit_path(unit) %></td>
+            <td><%= "#{unit.attendance_of_student(@user)}%" %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class='col-lg-6'>
+      <h4>Lecturer Attendance</h4>
+
+      <table>
+        <tr>
+          <th>Lecturer</th>
+          <th>Unit</th>
+          <th>Attendance</th>
+        </tr>
+
+        <% @user.attendance_by_lecturer.each do |_, lectures| %>
+          <tr>
+            <td><%= link_to lectures.first.lecturer.name, admin_user_path(lectures.first.lecturer) %></td>
+            <td><%= link_to lectures.first.unit.unit_name, admin_unit_path(lectures.first.unit) %></td>
+            <td><%= Lecture.calculate_attendance_for_student(lectures, @user) %>%</td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+
+  <br />
+  <br />
+
   <div class='row'>
     <div class='col-lg-6'>
       <h4>Past classes</h4>
@@ -49,7 +225,7 @@
           <th>Room</th>
           <th>Lecturer</th>
           <th>When</th>
-          <th>Duration</th>
+          <th style='width: 20%'>Status</th>
         </tr>
 
         <% @user.lectures_in_past.each do |lecture| %>
@@ -57,8 +233,20 @@
             <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
             <td><%= lecture.lecture_room %></td>
             <td><%= link_to lecture.lecturer.name, admin_user_path(lecture.lecturer) %></td>
-            <td><%= lecture.start_time %></td>
-            <td><%= lecture.duration %></td>
+            <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
+            <td><% if (record = lecture.lecture_students.select{ |ls| ls.user_id == @user.id }).count > 0 %>
+                  <% if record.first.seconds_late >= 30.minutes %>
+                    <span class="extremely-late">Extremely late</span>
+                  <% elsif record.first.seconds_late >= 15.minutes %>
+                    <span class="late">Late</span>
+                  <% elsif record.first.seconds_late >= 10.minutes %>
+                    <span class="slightly-late">Slightly late</span>
+                  <% else %>
+                    <span class="on-time">On time</span>
+                  <% end %>
+                <% else %>
+                  <span class="not-registered">Not registered</span>
+                <% end %></td>
           </tr>
         <% end %>
       </table>
@@ -85,7 +273,7 @@
             <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
             <td><%= lecture.lecture_room %></td>
             <td><%= link_to lecture.lecturer.name, admin_user_path(lecture.lecturer) %></td>
-            <td><%= lecture.start_time %></td>
+            <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
             <td><%= lecture.duration %></td>
           </tr>
         <% end %>
@@ -100,27 +288,56 @@
 <% end %>
 
 <% if @user.lecturer? %>
-  <p><strong>Schedule</strong></p>
+  <p><strong>Lectures in past</strong></p>
   <table>
     <tr>
       <th>Name</th>
       <th>Room</th>
       <th>When</th>
       <th>Duration</th>
+      <th>Attendance</th>
     </tr>
 
-    <% @user.lectures_in_future.each do |lecture| %>
+    <% @user.lectured_in_past.each do |lecture| %>
       <tr>
         <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
         <td><%= lecture.lecture_room %></td>
-        <td><%= lecture.start_time %></td>
+        <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
         <td><%= lecture.duration %></td>
+        <td><%= lecture.attendance_actual %>/<%= lecture.attendance_expected %> (<%= lecture.attendance.to_i %>%)</td>
       </tr>
     <% end %>
   </table>
 
-  <% if @user.lectures_in_future.count == 0 %>
-    <p><i>No lectures upcoming.</i></p>
+  <% if @user.lectured_in_past.count == 0 %>
+    <p><i>There are no lectures taught by <%= @user.name %> in the past.</i></p>
+  <% end %>
+  
+  <br /><br />
+
+  <p><strong>Lectures in future</strong></p>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Room</th>
+      <th>When</th>
+      <th>Duration</th>
+      <th>Attendance</th>
+    </tr>
+
+    <% @user.lecturing_in_future.each do |lecture| %>
+      <tr>
+        <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
+        <td><%= lecture.lecture_room %></td>
+        <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
+        <td><%= lecture.duration %></td>
+        <td><%= lecture.attendance_actual %>/<%= lecture.attendance_expected %> (<%= lecture.attendance.to_i %>%)</td>
+      </tr>
+    <% end %>
+  </table>
+
+  <% if @user.lecturing_in_future.count == 0 %>
+    <p><i>No lectures being taught by <%= @user.name %> in the future.</i></p>
   <% end %>
 <% end %>
 
@@ -129,8 +346,8 @@
 
 <%= link_to "Edit #{@user.type.capitalize}", edit_admin_user_path(@user) %>
 
-<% if @user != current_user %>
-  | <%= link_to "Delete Student", admin_user_path(@user), :method => "DELETE", class: "delete-confirmation" %>
+<% if @user != current_user and current_user.admin? %>
+  | <%= link_to "Delete #{@user.type.capitalize}", admin_user_path(@user), :method => "DELETE", class: "delete-confirmation" %>
 <% end %>
 
 | <%= link_to "Back to #{@user.type.capitalize}s", admin_users_with_type_path(@user.type) %>

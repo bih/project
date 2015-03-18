@@ -1,11 +1,14 @@
-%h1 Listing All Units
+- if current_user.is_unit_leader?
+  %h1 Listing Your Units
+- else
+  %h1 Listing All Units
+-
 
 %br
 
 %table
   %tr
-    %th #
-    %th Unit Name
+    %th{ style: "width: 30%" } Unit Name
     %th Unit Code
     %th Unit Year
     %th Unit Leaders
@@ -14,23 +17,26 @@
 
   - @units.each do |unit|
     %tr
-      %td= unit.id
-      %td= unit.unit_name
+      %td= link_to unit.unit_name, admin_unit_path(unit)
       %td= unit.unit_code
       %td= unit.unit_year
       %td
-        = @output = unit.unit_lecturers.map{ |ul| User.find(ul.user_id).name }.join(', ')
+        = @output = unit.unit_lecturers.map{ |ul| u = User.find(ul.user_id); link_to(u.name, admin_user_path(u)).html_safe }.join(', ').html_safe
         = "<i>No leaders</i>".html_safe if @output.blank?
       %td
         = unit.lectures.count
       %td
+        = link_to "Unit Report", admin_unit_report_path(unit)
+        = "|"
         = link_to "Manage Leaders", admin_unit_path(unit)
         = "|"
         = link_to "Manage Lectures", admin_unit_lectures_path(unit)
-        = "|"
-        = link_to "Edit", edit_admin_unit_path(unit)
-        = "|"
-        = link_to "Destroy", admin_unit_path(unit), :method => "DELETE"
+        - if current_user.admin?
+          = "|"
+          = link_to "Edit", edit_admin_unit_path(unit)
+          = "|"
+          = link_to "Destroy", admin_unit_path(unit), :method => "DELETE"
+        -
   -
 
 
@@ -40,13 +46,15 @@
       No units were found.
 -
 
-%br 
+- if current_user.admin?
+  %br
 
-= will_paginate @units, renderer: BootstrapPagination::Rails
+  = will_paginate @units, renderer: BootstrapPagination::Rails
+-
 
 %br
 
 %p
   = link_to "New Unit", new_admin_unit_path
   = "|"
-  = link_to "Back to Admin", admin_path
+  = link_to "Back to #{current_user.type.capitalize}", admin_path

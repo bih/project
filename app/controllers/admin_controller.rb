@@ -17,7 +17,7 @@ private
     attendance = { 1 => [], 2 => [], 3 => [], 4 => [], 5 => [] }
 
     Lecture.this_week.each do |l|
-      attendance[l.start_time.wday].push(l.attendance) if l.start_time.wday <= 5
+      attendance[l.start_time.wday].push(l.attendance) if l.start_time.wday <= 5 and l.students.any?
     end
 
     attendance = attendance.map do |key, value|
@@ -38,7 +38,7 @@ private
     attendance = { 1 => [], 2 => [], 3 => [], 4 => [], 5 => [] }
 
     Lecture.last_week.each do |l|
-      attendance[l.start_time.wday].push(l.attendance) if l.start_time.wday <= 5
+      attendance[l.start_time.wday].push(l.attendance) if l.start_time.wday <= 5 and l.students.any?
     end
 
     attendance = attendance.map do |key, value|

@@ -51,8 +51,17 @@ class LectureStudent < ActiveRecord::Base
   end
 
   def seconds_late
-    return "Error" if attendance_seconds < 0
-    (attendance_seconds % 60).floor
+    res = attendance_seconds
+    res = 0 if res < 0
+    res
+  end
+
+  def minutes_late
+    (seconds_late / 60.0).round
+  end
+
+  def minutes_late_or_nil
+    (seconds_late / 60.0).round
   end
 
   def attended?

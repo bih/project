@@ -1,37 +1,37 @@
 %h1 Lecturer Panel
 
-%table{ style: "width: 80%; text-align: center" }
-  %tr
-    %th Classes upcoming
-    %th Today's attendance
-  
-  %tr
-    %td
-      -# Students
-      %p= link_to "View All Students", admin_users_with_type_path(:student)
-      %p= link_to "New Student", admin_new_user_with_type_path(:student)
-
-    %td
-      -# Status (needs updating)
-      %h1 84.3%
-
-%br
 %br
 
 %table{ style: "width: 80%; text-align: center" }
   %tr
     %th Students
-    %th Lectures
-
-
+    %th Classes
+  
   %tr
     %td
       -# Students
-      %p= link_to "View All Students", admin_users_with_type_path(:student)
+      %p= link_to "View Your Students", admin_users_with_type_path(:student)
+      %p= link_to "Student With Low Attendance", admin_users_with_type_path(:student) + "?watchlist=true"
       %p= link_to "New Student", admin_new_user_with_type_path(:student)
-
 
     %td
       -# Lectures
-      %p= link_to "List All Lectures", admin_lectures_path
+      %p= link_to "List Your Lectures", admin_lectures_path
+      %p= link_to "Today's Classes", admin_lectures_on_path
       %p= link_to "Create New Lecture", new_admin_lecture_path
+
+- if current_user.is_unit_leader?
+
+  %br
+  %br
+
+  %table{ style: "width: 80%; text-align: center" }
+    %tr
+      %th (For Unit Leaders Only) Units
+
+    %tr
+      %td
+        -# Students
+        %p= link_to "View Your Units", admin_units_path
+
+-

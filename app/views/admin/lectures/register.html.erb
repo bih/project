@@ -1,11 +1,19 @@
 <h3>Register for "<%= @lecture.lecture_name %>" <%= @lecture.lecture_type.capitalize %></h3>
 
+<br />
+
 <% if @lecture.students.count == 0 %>
-  <p><i>No students are registered for this <%= @lecture.lecture_type %>. <%= link_to "Click here to add students.", admin_lecture_path(@lecture) %></i></p>
+  <div class="alert alert-danger alert-dismissable fade in">
+    No students are registered for this <%= @lecture.lecture_type %>. <%= link_to "Click here to add students.", admin_lecture_path(@lecture) %>
+  </div>
 <% elsif @lecture.has_closed? %>
-  <p><i>This register cannot no longer be accessed as the <%= @lecture.lecture_type %> has ended.</i></p>
+  <div class="alert alert-danger alert-dismissable fade in">
+    This register cannot no longer be accessed as the <%= @lecture.lecture_type %> has ended.
+  </div>
 <% elsif @lecture.is_full? %>
-  <p><i>This register is complete. <%= @lecture.attendance_actual %> out of <%= @lecture.attendance_expected %> students (100%) have been registered.</i></p>
+  <div class="alert alert-danger alert-dismissable fade in">
+    This register is complete. <%= @lecture.attendance_actual %> out of <%= @lecture.attendance_expected %> students (100%) have been registered.
+  </div>
 <% elsif @lecture.has_started? %>
   Enter your MMU ID or <strong>scan your MMU card</strong>.<br /><br />
 
@@ -24,10 +32,14 @@
 
   <!-- Implement card scanner -->
 <% else %>
-  <p><i>Registration for <%= @lecture.lecture_type %> has not opened. Roughly opens in <%= distance_of_time_in_words(Time.now.utc, @lecture.start_time.utc, include_seconds: true) %>.</p>
+  <div class="alert alert-danger alert-dismissable fade in">
+    Registration for <%= @lecture.lecture_type %> has not opened. Roughly opens in <%= distance_of_time_in_words(Time.now.utc, @lecture.start_time.utc, include_seconds: true) %>.
+  </div>
 <% end %>
 
 <br />
 
+<%= link_to "Go To Student List", admin_lecture_path(@lecture) %> | 
+<%= link_to "Back to #{@lecture.unit.unit_name} Unit", admin_unit_lectures_path(@lecture.unit) %> | 
 <%= link_to "Back to Classes", admin_lectures_path %> | 
 <%= link_to "Back to Admin", admin_path %>
