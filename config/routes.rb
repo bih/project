@@ -7,8 +7,13 @@ Rails.application.routes.draw do
   get '/admin' => 'admin#index'
   get '/lecturer' => 'admin#index'
 
+  # Administration.
   namespace :admin do
+
+    # Managing students/lecturers and admins.
     resources :users
+
+    # Managing units and their leaders.
     resources :units do
       post '/leaders' => 'units#create_leader'
       delete '/leader/:id' => 'units#delete_leader', as: 'delete_leader'
@@ -17,9 +22,11 @@ Rails.application.routes.draw do
       get '/report' => 'units#report', as: 'report'
     end
 
+    # Some additions ot the students/lecturers and admins.
     get '/users/new/type/:type/' => 'users#new', :as => :new_user_with_type
     get '/users/type/:type/' => 'users#index', :as => :users_with_type
 
+    # Managing lectures, their units and their students.
     resources :lectures do
       get '/register' => 'lectures#register', as: 'register'
       post '/register' => 'lectures#register_student'
@@ -29,6 +36,8 @@ Rails.application.routes.draw do
     end
 
     get '/lectures_on' => 'lectures#on_day', as: 'lectures_on'
+
+    # Logs of who has been doing what in the system.
     get '/logs' => 'logs#index'
   end
 
@@ -40,53 +49,4 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {
     :sessions => 'users/sessions'
   }
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end
