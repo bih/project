@@ -115,7 +115,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.errors.any?, "Wrongly not created a student when all fields are valid"
   end
 
-
   test "try to make a student into different user types" do
     user = create_valid_student()
     assert user.student?, "User not a student when created as a student"
@@ -132,5 +131,22 @@ class UserTest < ActiveSupport::TestCase
     # Try a type that doesn't exist.
     user.update_attributes(:account_type => "president")
     assert user.errors.any?, "User was able to change type to president (valid options are only admin, lecturer and student)"
+  end
+
+  test "try to set MMU ID for student to invalid" do
+    user = User.where_type(:student).first
+
+    user.update_attributes(:mmu_id => "100") # too short - can only be 8 characters
+    assert user.errors.any?, "Student was able to set MMU ID to 100 - too short"
+
+    user.update_attributes(:mmu_id => "100000000") # too long - can only be 8 characters
+    assert user.errors.any?, "Student was able to set MMU ID to 100000000 - too long (it is 9 characters)"
+
+    user.update_attributes(:mmu_id => "11000900") # valid
+    assert_not user.errors.any?, "Student was not able to set MMU ID to valid ID (which is 8 characters)"
+
+    user2 = User.where_type(:student).second
+    user2.update_attributes(:mmu_id => "11000900") # valid but already being used
+    assert user2.errors.any?, "Student was able to set MMU ID that has already been used by another student in the system"
   end
 end

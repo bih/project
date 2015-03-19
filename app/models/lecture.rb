@@ -6,6 +6,7 @@ class Lecture < ActiveRecord::Base
   validates_uniqueness_of :lecture_name, :scope => [:user_id, :unit_id, :start_time, :end_time]
 
   validates :lecture_name, :presence => true
+  validates :lecture_type, :presence => true
   validates :lecture_room, :presence => true
   validates :unit_id, :presence => true
   validates :user_id, :presence => true
@@ -22,7 +23,7 @@ class Lecture < ActiveRecord::Base
 
   validate :avoid_ending_before_starting
   def avoid_ending_before_starting
-    errors.add(:end_time, "cannot be before or equal to the start time") if (end_time || 1) <= (start_time || 1)
+    errors.add(:end_time, "cannot be before or equal to the start time") if end_time.presence <= start_time.presence
   end
 
   before_destroy do
@@ -66,7 +67,7 @@ class Lecture < ActiveRecord::Base
   end
 
   def self.calculate_punctuality_for_student(array)
-    ((array.sum / array.count) * 100.0).round
+    (array.sum / array.count).round
   end
 
   def self.during_week(date = nil)

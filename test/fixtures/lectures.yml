@@ -5,6 +5,7 @@ one:
   unit_id: 1
   lecture_name: "Introduction to Human-Computer Interaction"
   lecture_type: "lecture"
+  lecture_room: "E147"
   user_id: 4
   start_time: 2015-02-19 09:00:00
   end_time: 2015-02-19 11:00:00
@@ -16,6 +17,7 @@ two:
   unit_id: 3
   lecture_name: "Introduction to Computer System Fundamentals"
   lecture_type: "lecture"
+  lecture_room: "E301"
   user_id: 2
   start_time: 2015-02-19 13:00:00
   end_time: 2015-02-19 15:00:00
@@ -27,6 +29,7 @@ three:
   unit_id: 2
   lecture_name: "Introduction to Enterprise Programming"
   lecture_type: "lecture"
+  lecture_room: "E419"
   user_id: 2
   start_time: 2015-02-19 15:00:00
   end_time: 2015-02-19 16:00:00
