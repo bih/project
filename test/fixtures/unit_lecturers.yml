@@ -1,9 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# Rabia is a leader of Human-Computer Interaction
 one:
-  user_id: 1
+  user_id: 4
   unit_id: 1
 
+# Darren is a leader of Enterprise Programming and Computer System Fundamentals
 two:
-  user_id: 1
-  unit_id: 1
+  user_id: 2
+  unit_id: 2
+
+three:
+  user_id: 2
+  unit_id: 3

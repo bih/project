@@ -5,6 +5,7 @@ class HomeController < ApplicationController
 
   def student_index
     @user = current_user
+    @units = Unit.where_student(@user)
 
     @attendance = lambda {
       if @user.attendance >= 95
@@ -15,8 +16,6 @@ class HomeController < ApplicationController
         { :class => "percentage-healthy", :text => "Your overall attendance is healthy at #{@user.attendance}%, but you could do better." }
       end
     }.call
-
-    @units = Unit.where_student(@user)
 
     render :"student-index"
   end

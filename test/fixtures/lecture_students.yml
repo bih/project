@@ -1,13 +1,29 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# First lecture (Human-Computer Interaction)
 one:
   lecture_id: 1
-  user_id: 1
+  user_id: 3
   attendance: false
-  attendance_time: 2015-02-15 20:12:30
 
 two:
   lecture_id: 1
-  user_id: 1
+  user_id: 5
   attendance: false
-  attendance_time: 2015-02-15 20:12:30
+
+# Second lecture (Computer System Fundamentals)
+three:
+  lecture_id: 2
+  user_id: 3
+  attendance: false
+
+# Third lecture (Enterprise Programming)
+three:
+  lecture_id: 3
+  user_id: 3
+  attendance: false
+
+four:
+  lecture_id: 3
+  user_id: 5
+  attendance: false

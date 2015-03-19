@@ -44,7 +44,7 @@ class Admin::LecturesController < ApplicationController
     get_units_and_lecturers
 
     if @lecture.save
-      redirect_to admin_lectures_path, notice: "Class '#{@lecture.name}' created."
+      redirect_to admin_lectures_path, notice: "Class '#{@lecture.lecture_name}' created."
     else
       render :new
     end
@@ -60,7 +60,7 @@ class Admin::LecturesController < ApplicationController
     get_units_and_lecturers
 
     if @lecture.save
-      redirect_to admin_unit_lectures_path(@lecture.unit), notice: "Class '#{@lecture.name}' updated."
+      redirect_to admin_unit_lectures_path(@lecture.unit), notice: "Class '#{@lecture.lecture_name}' updated."
     else
       render :edit
     end
@@ -68,7 +68,7 @@ class Admin::LecturesController < ApplicationController
 
   def destroy
     @lecture.destroy
-    redirect_to admin_lectures_path, notice: "Class '#{@lecture.name}' destroyed."
+    redirect_to admin_lectures_path, notice: "Class '#{@lecture.lecture_name}' destroyed."
   end
 
   def show

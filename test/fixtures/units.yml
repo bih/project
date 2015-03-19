@@ -1,9 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  unit_name: MyString
-  unit_year: MyString
+  id: 1
+  unit_name: "Human-Computer Interaction"
+  unit_year: 2015
+  unit_code: "6G6Z1014_1415_9Z6"
 
 two:
-  unit_name: MyString
-  unit_year: MyString
+  id: 2
+  unit_name: "Enterprise Programming"
+  unit_year: 2015
+  unit_code: "6G6Z1003_1415_9Z6"
+
+three:
+  id: 3
+  unit_name: "Computer System Fundamentals"
+  unit_year: 2015
+  unit_code: "6G4Z1002_1213_9Z6"

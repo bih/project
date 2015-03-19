@@ -1,9 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
 one:
   id: 1
   first_name: "John"
@@ -26,4 +22,24 @@ three:
   last_name: "Hameed"
   email: "11026592@stu.mmu.ac.uk"
   account_type: "student"
+  mmu_id: "11026592"
+  course_name: "Computer Science"
+  encrypted_password: "$2a$10$yMswHua6dMhoOnjYOaXejurXbQYc4bwTjB5373Pk3vr6bTR91FZ8G"
+
+four:
+  id: 4
+  first_name: "Rabia"
+  last_name: "Khan"
+  email: "rabia.khan@mmu.ac.uk"
+  account_type: "lecturer"
+  encrypted_password: "$2a$10$yMswHua6dMhoOnjYOaXejurXbQYc4bwTjB5373Pk3vr6bTR91FZ8G"
+
+five:
+  id: 5
+  first_name: "Timothy"
+  last_name: "Jones"
+  email: "300100200@stu.mmu.ac.uk"
+  account_type: "student"
+  mmu_id: "300100200"
+  course_name: "Computer Science"
   encrypted_password: "$2a$10$yMswHua6dMhoOnjYOaXejurXbQYc4bwTjB5373Pk3vr6bTR91FZ8G"
