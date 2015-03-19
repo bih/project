@@ -10,7 +10,7 @@ class Admin::LogsControllerTest < ActionController::TestCase
   
   test "should get index" do
     get :index
-    assert_response :success
+    assert_response :success, "Could not render show all logs page"
   end
 
 end

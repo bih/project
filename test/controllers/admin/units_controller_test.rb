@@ -12,12 +12,17 @@ class Admin::UnitsControllerTest < ActionController::TestCase
 
   test "should get index" do
     get :index
-    assert_response :success
+    assert_response :success, "Could not render show all units page"
+  end
+
+  test "should get show unit" do
+    get :show, id: 1
+    assert_response :success, "Could not render show unit leaders page"
   end
 
   test "should get new" do
     get :new
-    assert_response :success
+    assert_response :success, "Could not render new unit page"
   end
 
   test "should get create" do
@@ -29,12 +34,12 @@ class Admin::UnitsControllerTest < ActionController::TestCase
       }
     end
 
-    assert_redirected_to admin_unit_path(assigns(:unit))
+    assert_redirected_to admin_unit_path(assigns(:unit)), "Could not create unit and redirect to unit leaders page"
   end
 
   test "should get edit" do
     get :edit, id: 1
-    assert_response :success
+    assert_response :success, "Could not show edit page for unit 1"
   end
 
   test "should get update" do
@@ -47,12 +52,12 @@ class Admin::UnitsControllerTest < ActionController::TestCase
       }
     }
 
-    assert_redirected_to admin_units_path
+    assert_redirected_to admin_units_path, "Could not update unit 1 and redirect to all units"
   end
 
   test "should get destroy" do
     delete :destroy, id: 1
-    assert_redirected_to admin_units_path
+    assert_redirected_to admin_units_path, "Could not destroy unit 1 and redirect to all units"
   end
 
 end

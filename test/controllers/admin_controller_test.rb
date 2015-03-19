@@ -10,7 +10,7 @@ class AdminControllerTest < ActionController::TestCase
   
   test "should get index" do
     get :index
-    assert_response :success
+    assert_response :success, "Could not access admin index page."
   end
 
 end

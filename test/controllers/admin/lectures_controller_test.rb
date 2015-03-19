@@ -12,17 +12,22 @@ class Admin::LecturesControllerTest < ActionController::TestCase
   
   test "should get index" do
     get :index
-    assert_response :success
+    assert_response :success, "Did not render show all lectures page"
   end
 
-  test "should get lecture on day" do
+  test "should get lecture on today" do
     get :on_day
-    assert_response :success
+    assert_response :success, "Did not render show lectures today page"
+  end
+
+  test "should get lecture on specific day" do
+    get :on_day, date: "2015-10-05"
+    assert_response :success, "Did not render show lectures on 2015-10-05 day page"
   end
 
   test "should get new lecture" do
     get :new
-    assert_response :success
+    assert_response :success, "Did not render create new lecture page"
   end
 
   test "should create lecture" do
@@ -43,12 +48,12 @@ class Admin::LecturesControllerTest < ActionController::TestCase
         }
     end
 
-    assert_redirected_to admin_lectures_path
+    assert_redirected_to admin_lectures_path, "Did not create lecture and redirect to show all lectures page"
   end
 
   test "should get edit" do
     get :edit, id: 1
-    assert_response :success
+    assert_response :success, "Did not render edit lecture 1 page"
   end
 
   test "should update lecture" do
@@ -70,7 +75,7 @@ class Admin::LecturesControllerTest < ActionController::TestCase
         }
       }
 
-    assert_redirected_to admin_unit_lectures_path(assigns(:lecture))
+    assert_redirected_to admin_unit_lectures_path(assigns(:lecture)), "Did not update lecture 1 and redirect to lecture page."
   end
 
   test "should destroy lecture" do
