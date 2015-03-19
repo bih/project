@@ -120,9 +120,6 @@ class Admin::LecturesController < ApplicationController
     end
   end
 
-  def download
-  end
-
 protected
 
   def set_lecture

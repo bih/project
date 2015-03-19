@@ -52,7 +52,7 @@ class LectureStudent < ActiveRecord::Base
 
   def seconds_late
     res = attendance_seconds
-    res = 0 if res < 0
+    res = 0 if res.to_i <= 0
     res
   end
 
