@@ -41,15 +41,15 @@ class User < ActiveRecord::Base
   end
 
   def make_admin!
-    update_attribute(:account_type, 'admin')
+    update_attributes(:account_type => 'admin')
   end
 
   def make_lecturer!
-    update_attribute(:account_type, 'lecturer')
+    update_attributes(:account_type => 'lecturer')
   end
 
   def make_student!
-    update_attribute(:account_type, 'student')
+    update_attributes(:account_type => 'student')
   end
 
   def admin?

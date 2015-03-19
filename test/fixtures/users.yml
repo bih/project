@@ -4,8 +4,26 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+one:
+  id: 1
+  first_name: "John"
+  last_name: "Smith"
+  email: "john.smith@mmu.ac.uk"
+  account_type: "admin"
+  encrypted_password: "$2a$10$yMswHua6dMhoOnjYOaXejurXbQYc4bwTjB5373Pk3vr6bTR91FZ8G"
+
+two:
+  id: 2
+  first_name: "Darren"
+  last_name: "Dancey"
+  email: "darren.dancey@mmu.ac.uk"
+  account_type: "lecturer"
+  encrypted_password: "$2a$10$yMswHua6dMhoOnjYOaXejurXbQYc4bwTjB5373Pk3vr6bTR91FZ8G"
+
+three:
+  id: 3
+  first_name: "Bilawal"
+  last_name: "Hameed"
+  email: "11026592@stu.mmu.ac.uk"
+  account_type: "student"
+  encrypted_password: "$2a$10$yMswHua6dMhoOnjYOaXejurXbQYc4bwTjB5373Pk3vr6bTR91FZ8G"
