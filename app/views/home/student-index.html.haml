@@ -55,7 +55,7 @@
 
         <% @user.lectures_in_future.each do |lecture| %>
           <tr>
-            <td><%= link_to lecture.lecture_name, admin_lecture_path(lecture) %></td>
+            <td><%= lecture.lecture_name %></td>
             <td><%= lecture.lecture_room %></td>
             <td><%= lecture.lecturer.name %></td>
             <td><%= lecture.start_time.strftime("%a #{lecture.start_time.day.ordinalize} %b %I:%M %P") %></td>
