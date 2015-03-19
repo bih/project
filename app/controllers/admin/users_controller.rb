@@ -7,7 +7,8 @@ class Admin::UsersController < ApplicationController
 
   def index
     if params.include?(:watchlist)
-      @users = User.where_type(@type).all.select{ |user| user.watchlist? }.sort_by{ |user| user.attendance }
+      # Only students can go on watchlist, as you would expect.
+      @users = User.where_type(:student).all.select{ |user| user.watchlist? }.sort_by{ |user| user.attendance }
     else
       @users = User.paginate(:page => params[:page], :per_page => 30).where_type(@type).all
     end

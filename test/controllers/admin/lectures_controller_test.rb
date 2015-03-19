@@ -40,7 +40,7 @@ class Admin::LecturesControllerTest < ActionController::TestCase
 
         unit_id: 1,
         user_id: 2
-      }
+        }
     end
 
     assert_redirected_to admin_lectures_path
@@ -67,20 +67,20 @@ class Admin::LecturesControllerTest < ActionController::TestCase
 
         unit_id: 1,
         user_id: 2
+        }
       }
-    }
 
     assert_redirected_to admin_unit_lectures_path(assigns(:lecture))
   end
 
   test "should destroy lecture" do
     delete :destroy, id: 1
-    assert_redirected_to admin_lectures_path
+    assert_redirected_to admin_lectures_path, "Did not destroy lecture 1 and redirect to all lectures."
   end
 
   test "should get lecture" do
     get :show, id: 1
-    assert_response :success
+    assert_response :success, "Did not render lecture 1 student list."
   end
 
   test "should post add student" do
@@ -88,41 +88,41 @@ class Admin::LecturesControllerTest < ActionController::TestCase
       lecture_id: 1,
       lecture_student: {
         user_id: 3
+        }
       }
-    }
 
-    assert_redirected_to admin_lecture_path(1)
+    assert_redirected_to admin_lecture_path(1), "Did not add student and redirect to lecture 1 student list."
   end
 
   test "should post copy students" do
     post :copy_students, {
       lecture_id: 1,
       lecture_to_copy_id: 2
-    }
+      }
 
-    assert_redirected_to admin_lecture_path(1)
+    assert_redirected_to admin_lecture_path(1), "Did not copy students and redirect to lecture 1 student list."
   end
 
   test "should post remove student from lecture" do
     post :remove_student, {
       lecture_id: 1,
       id: 1
-    }
+      }
 
-    assert_redirected_to admin_lecture_path(1)
+    assert_redirected_to admin_lecture_path(1), "Did not redirect to lecture 1 student list."
   end
 
   test "should get lecture register" do
     get :register, lecture_id: 1
-    assert_response :success
+    assert_response :success, "Did not render lecture 1 register."
   end
 
   test "should post register student for lecture" do
     post :register_student, {
       lecture_id: 1,
       student_id: 3
-    }
+      }
 
-    assert_redirected_to admin_lecture_register_path(1)
+    assert_redirected_to admin_lecture_register_path(1), "Did not redirect to lecture 1 register."
   end
 end
