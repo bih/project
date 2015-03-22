@@ -1,7 +1,8 @@
-$font: 'Arimo', 'Helvetica Neue', 'Helvetica', 'Arial', 'Verdana';
+$font: 'Arial', 'Verdana', 'Helvetica Neue', 'Helvetica';
 
 body {
   font-family: $font;
+  font-size: 12px;
 }
 
 .ladda-label {
