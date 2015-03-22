@@ -2,8 +2,8 @@ require 'test_helper'
 
 class LectureTest < ActiveSupport::TestCase
   test "create a lecture with no data" do
-    lecture = Lecture.create() rescue nil
-    assert_nil lecture, "Lecture can be created without any data"
+    lecture = Lecture.create()
+    assert_not lecture.valid?, "Lecture can be created without any data"
   end
 
   test "create a lecture with no lecture name" do
@@ -84,9 +84,9 @@ class LectureTest < ActiveSupport::TestCase
       unit_id: 1,
       user_id: 2,
       end_time: Time.now.beginning_of_hour + 1.hour
-      }) rescue nil
+      })
 
-    assert_nil lecture, "Lecture can be created without a start time"
+    assert_not lecture.valid?, "Lecture can be created without a start time"
   end
 
   test "create a lecture with no end time" do
@@ -97,9 +97,9 @@ class LectureTest < ActiveSupport::TestCase
       unit_id: 1,
       user_id: 2,
       start_time: Time.now.beginning_of_hour
-      }) rescue nil
+      })
     
-    assert_nil lecture, "Lecture can be created without an end time"
+    assert_not lecture.valid?, "Lecture can be created without an end time"
   end
 
   test "create a lecture on day and find it on that day" do
