@@ -9,7 +9,6 @@ jQuery(document).on('ready page:change', function() {
   var datetimefield = jQuery('.datetimepicker');
   datetimefield.datetimepicker({
     format: 'YYYY-MM-DD HH:00:00',
-    hours12: true,
     formatTime: 'HH:00',
     lang: datetimefield.attr('lang') || datetimefield.parents('[lang]').attr('lang'),
     onGenerate: function(current_time, input) {
