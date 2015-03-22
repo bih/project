@@ -265,35 +265,41 @@ class User < ActiveRecord::Base
       end
     end
 
-    attendance.each do |unit, weeks|
-      attendance_names.push(unit) unless attendance_names.include?(unit)
-      attendance[unit] = weeks.select{ |week, attended| attended.count > 0 }
-    end
+    if attendance.count > 0
+      attendance.each do |unit, weeks|
+        attendance_names.push(unit) unless attendance_names.include?(unit)
+        attendance[unit] = weeks.select{ |week, attended| attended.count > 0 }
+      end
 
-    max_size = attendance.first.count
-    all_weeks = attendance.values.first.keys
-    attendance.each do |unit, weeks|
-      max_size = weeks.count if weeks.count > max_size
-      all_weeks << weeks.keys
-    end
+      max_size = attendance.first.count
+      all_weeks = attendance.values.first.keys
+      attendance.each do |unit, weeks|
+        max_size = weeks.count if weeks.count > max_size
+        all_weeks << weeks.keys
+      end
 
-    all_weeks = all_weeks.flatten.uniq.sort
+      all_weeks = all_weeks.flatten.uniq.sort
 
-    attendance.each do |unit, weeks|
-      all_weeks.each do |week|
-        if not attendance[unit].keys.include?(week)
-          attendance[unit][week] = {}
+      attendance.each do |unit, weeks|
+        all_weeks.each do |week|
+          if not attendance[unit].keys.include?(week)
+            attendance[unit][week] = {}
+          end
         end
       end
-    end
 
-    final_attendance = attendance.map do |unit, weeks|
-      weeks.sort.map do |week, attended|
-        did_attend = attended.select{ |a| a == true }.count.to_f
-        altogether = attended.count.to_f
+      final_attendance = attendance.map do |unit, weeks|
+        weeks.sort.map do |week, attended|
+          did_attend = attended.select{ |a| a == true }.count.to_f
+          altogether = attended.count.to_f
 
-        ((did_attend / altogether) * 100.0).round rescue 100
+          ((did_attend / altogether) * 100.0).round rescue 100
+        end
       end
+    else
+      final_attendance = []
+      attendance_names = []
+      all_weeks = []
     end
 
     if final_attendance.count > 1

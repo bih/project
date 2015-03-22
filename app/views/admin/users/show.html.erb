@@ -191,6 +191,11 @@
           </tr>
         <% end %>
       </table>
+
+      <% if @units.count == 0 %>
+        <br />
+        <p class='center'><i><%= @user.name %> is not part of any units.</i></p>
+      <% end %>
     </div>
     <div class='col-lg-6'>
       <h4>Lecturer Attendance</h4>
@@ -210,6 +215,11 @@
           </tr>
         <% end %>
       </table>
+
+      <% if @user.attendance_by_lecturer.count == 0 %>
+        <br />
+        <p class='center'><i><%= @user.name %> is not registered for any classes.</i></p>
+      <% end %>
     </div>
   </div>
 
