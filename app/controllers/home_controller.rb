@@ -11,7 +11,7 @@ class HomeController < ApplicationController
       if @user.attendance >= 95
         { :class => "percentage-great", :text => "Your overall attendance is very good at #{@user.attendance}%. Keep it up." }
       elsif @user.attendance <= 75
-        { :class => "percentage-warning", :text => "Your overall attendance is worrying low at #{@user.attendance}%. You need to go to more classes." }
+        { :class => "percentage-warning", :text => "Your overall attendance is worryingly low at #{@user.attendance}%. You need to go to more classes." }
       else
         { :class => "percentage-healthy", :text => "Your overall attendance is healthy at #{@user.attendance}%, but you could do better." }
       end
