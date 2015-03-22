@@ -16,11 +16,29 @@
     }
   }
 
+  .error {
+    display: inline-block;
+    background: #F2DEDE;
+    border: 1px solid #EBCCD1;
+    color: #A94442;
+    width: auto;
+    padding: 5px;
+
+    @media screen and (max-width: 434px) {
+      margin-top: -1px; 
+    }
+
+    @media screen and (min-width: 1200px) {
+      margin-top: -1px; 
+    }
+  }
+
   input {
     font-size: 14px;
     padding: 5px;
     min-width: 300px;
     vertical-align: top;
+    outline: none;
   }
 
   textarea {

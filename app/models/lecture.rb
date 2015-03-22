@@ -24,6 +24,8 @@ class Lecture < ActiveRecord::Base
   validate :avoid_ending_before_starting
   def avoid_ending_before_starting
     errors.add(:end_time, "cannot be before or equal to the start time") if end_time.presence <= start_time.presence
+  rescue
+    errors.add(:start_time, "or end time cannot be empty")    
   end
 
   before_destroy do
