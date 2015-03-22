@@ -46,6 +46,10 @@ a.navbar-brand, .navbar, .navbar .container, .navbar ul.nav, .navbar ul.nav > li
 
 .navbar ul.nav > li {
   height: 74px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .navbar ul.nav > li.admin {
