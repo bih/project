@@ -34,7 +34,8 @@
 
         <div class="field">
           <%= f.label :user_id, "Lecturer" %>
-          <%= f.select :user_id, @lecturers, :required => true %>
+          <% if (current_user.lecturer? and not current_user.is_unit_leader?); @lecturers_fvalue = { selected: current_user.id }; @lecturers_lvalue = { required: true, disabled: true }; else; @lecturers_fvalue = @lecturers_lvalue = {}; end %>
+          <%= f.select :user_id, @lecturers, @lecturers_fvalue, @lecturers_lvalue %>
           <%= f.error :user_id %>
         </div>
     </div>
