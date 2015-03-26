@@ -55,6 +55,9 @@
 %br
 
 %p
-  = link_to "New Unit", new_admin_unit_path
-  = "|"
+  - if current_user.admin?
+    = link_to "New Unit", new_admin_unit_path
+    = "|"
+  -
+  
   = link_to "Back to #{current_user.type.capitalize}", admin_path
