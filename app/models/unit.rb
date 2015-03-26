@@ -84,6 +84,8 @@ class Unit < ActiveRecord::Base
   def attendance
     attendance_of_lectures = lectures.map{ |a| a.attendance }
     (attendance_of_lectures.sum / attendance_of_lectures.count)
+  rescue
+    0
   end
 
   def attendance_by_weeks
